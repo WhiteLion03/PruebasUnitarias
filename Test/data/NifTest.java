@@ -17,7 +17,6 @@ class NifTest {
 
     @Test
     void testToString() {
-        Nif nif = new Nif("48281063S");
 
     }
 }
