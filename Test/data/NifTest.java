@@ -10,13 +10,11 @@ class NifTest {
     @Test
     void testEquals() {
         int hola = 17;
-        int adeu = 7;
-        int saludos = hola+adeu;
+        int adeu = 2;
     }
 
     @Test
     void testHashCode() {
-        String sergi = "Ciego";
     }
 
     @Test
