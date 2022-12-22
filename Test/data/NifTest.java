@@ -10,6 +10,7 @@ class NifTest {
     @Test
     void testEquals() {
         int hola = 17;
+        int adeu = 2;
     }
 
     @Test
