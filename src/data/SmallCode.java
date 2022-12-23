@@ -4,27 +4,22 @@ public class SmallCode {
     private final String code;
 
     public SmallCode(String code) throws NotCorrectCodeException {
-        if(verifyCode(code)){
+        if (verifyCode(code)) {
             this.code = code;
-        }else{
+        } else {
             throw new NotCorrectCodeException("El formato del SmallCode no es correcto");
         }
     }
 
     private boolean verifyCode(String code){
-        if(code.length() != 3 || !isNumeric(code)){;
-            return false;
-        }
-        return true;
+        return code.length() == 3 && isNumeric(code);
     }
 
     private boolean isNumeric(String code){
-        try{
-            Integer.parseInt(code);
-            return true;
-        }catch (NumberFormatException e){
-            return false;
+        for (int i = 0; i < 3; i++) {
+            if (!Character.isDigit(code.charAt(i))) return false;
         }
+        return true;
     }
 
     public String getCode(){
