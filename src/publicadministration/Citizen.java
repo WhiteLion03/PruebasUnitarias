@@ -1,7 +1,9 @@
 package publicadministration;
 
+import data.Nif;
+
 public class Citizen {
-    private data.Nif nif;
+    private Nif nif;
     private String name;
     private String adress;
     private String mobileNumb;
