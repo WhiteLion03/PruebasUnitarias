@@ -13,6 +13,7 @@ public class Nif {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Nif niff = (Nif) o;
+
         return nif.equals(niff.nif);
     }
 
