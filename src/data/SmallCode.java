@@ -4,7 +4,7 @@ public class SmallCode {
     private final String code;
 
     public SmallCode(String code) throws NotCorrectFormatException {
-        if (code == null) throw new NullPointerException();
+        if (code == null) throw new NullPointerException("El parámetro es null");
         if(verifyCode(code)){
             this.code = code;
         }else{
@@ -36,7 +36,9 @@ public class SmallCode {
     }
 
     @Override
-    public int hashCode() { return code.hashCode(); }
+    public int hashCode() {
+        return code.hashCode();
+    }
 
     @Override
     public String toString() {

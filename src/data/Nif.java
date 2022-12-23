@@ -9,7 +9,7 @@ public class Nif {
         } else if (verifyCode(code)) {
             this.nif = code;
         } else {
-            throw new NotCorrectFormatException("El formato del nif no és correcto");
+            throw new NotCorrectFormatException("El formato del nif no es correcto");
         }
     }
 
@@ -35,7 +35,6 @@ public class Nif {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Nif niff = (Nif) o;
-
         return nif.equals(niff.nif);
     }
 
