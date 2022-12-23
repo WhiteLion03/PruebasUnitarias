@@ -3,11 +3,12 @@ package data;
 public class SmallCode {
     private final String code;
 
-    public SmallCode(String code) throws NotCorrectCodeException {
+    public SmallCode(String code) throws NotCorrectFormatException {
+        if (code == null) throw new NullPointerException();
         if(verifyCode(code)){
             this.code = code;
         }else{
-            throw new NotCorrectCodeException("El formato del SmallCode no es correcto");
+            throw new NotCorrectFormatException("El formato del SmallCode no es correcto");
         }
     }
 
