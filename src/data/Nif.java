@@ -1,12 +1,9 @@
 package data;
 
-import java.util.NoSuchElementException;
-
 public class Nif {
-    // The tax identification number in the Spanish state.
     private final String nif;
 
-    public Nif (String code) throws NotCorrectFormatException {
+    public Nif(String code) throws NotCorrectFormatException {
         if (code == null) {
             throw new NullPointerException("El parámetro es null");
         } else if (verifyCode(code)) {
@@ -31,10 +28,10 @@ public class Nif {
         return true;
     }
 
-    public String getNif () { return this.nif; }
+    public String getNif() { return this.nif; }
 
     @Override
-    public boolean equals (Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Nif niff = (Nif) o;
@@ -43,10 +40,10 @@ public class Nif {
     }
 
     @Override
-    public int hashCode () { return nif.hashCode(); }
+    public int hashCode() { return nif.hashCode(); }
 
     @Override
-    public String toString () {
+    public String toString() {
         return "Nif{" + "nif ciudadano='" + nif + '\'' + '}';
     }
 }
