@@ -6,13 +6,13 @@ public class Nif {
     // The tax identification number in the Spanish state.
     private final String nif;
 
-    public Nif (String code) throws NotCorrectNifException {
+    public Nif (String code) throws NotCorrectFormatException {
         if (code == null) {
             throw new NullPointerException("El parámetro es null");
         } else if (verifyCode(code)) {
             this.nif = code;
         } else {
-            throw new NotCorrectNifException("El formato del nif no és correcto");
+            throw new NotCorrectFormatException("El formato del nif no és correcto");
         }
     }
 
