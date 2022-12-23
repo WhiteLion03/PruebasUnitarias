@@ -1,5 +1,7 @@
 package services;
 
+import publicadministration.Citizen;
+
 import java.net.ConnectException;
 
 public interface JusticeMinistery {
