@@ -4,7 +4,7 @@ public class SmallCode {
     private final String code;
 
     public SmallCode(String code) throws NotCorrectFormatException {
-        if (code == null) throw new NullPointerException();
+        if (code == null) throw new NullPointerException("El parámetro es null");
         if(verifyCode(code)){
             this.code = code;
         }else{
@@ -28,7 +28,7 @@ public class SmallCode {
     }
 
     @Override
-    public boolean equals (Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SmallCode smallCode = (SmallCode) o;
@@ -36,5 +36,12 @@ public class SmallCode {
     }
 
     @Override
-    public int hashCode () { return code.hashCode(); }
+    public int hashCode() {
+        return code.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "SmallCode{" + "CVS tarjeta='" + this.code + '\'' + '}';
+    }
 }

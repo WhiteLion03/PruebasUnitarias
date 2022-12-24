@@ -1,28 +1,28 @@
 package data;
 
-import javax.print.Doc;
-
 public class DocPath {
-    // Route in the file system.
-    private final String docPath;
+    private final String path;
 
-    public DocPath (String code) { this.docPath = code; }
+    public DocPath (String code) {
+        if (code == null) throw new NullPointerException("El parámetro es null");
+        this.path = code;
+    }
 
-    public String getDocPath () { return this.docPath; }
+    public String getPath () { return this.path; }
 
     @Override
     public boolean equals (Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DocPath docPath = (DocPath) o;
-        return this.docPath.equals(docPath.docPath);
+        return this.path.equals(docPath.path);
     }
 
     @Override
-    public int hashCode () { return docPath.hashCode(); }
+    public int hashCode () { return path.hashCode(); }
 
     @Override
     public String toString () {
-        return "Ruta{" + "ruta fixero='" + docPath + '\'' + '}';
+        return "DocPath{" + "ruta fichero='" + path + '\'' + '}';
     }
 }
