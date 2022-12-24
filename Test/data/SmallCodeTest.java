@@ -5,41 +5,38 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class NifTest {
-
+public class SmallCodeTest {
     @Test
     void testConstructor() {
         assertThrows(NullPointerException.class, () -> {
-            Nif nif = new Nif (null);
+            SmallCode smallCode = new SmallCode (null);
         });
         assertThrows(NotCorrectFormatException.class, () -> {
-            Nif nif = new Nif ("655G");
+            SmallCode smallCode = new SmallCode ("63");
         });
         assertThrows(NotCorrectFormatException.class, () -> {
-            Nif nif = new Nif ("402352348");
+            SmallCode smallCode = new SmallCode ("402352348");
         });
         assertThrows(NotCorrectFormatException.class, () -> {
-            Nif nif = new Nif ("40235a34F");
+            SmallCode smallCode = new SmallCode ("fjk");
         });
         assertThrows(NotCorrectFormatException.class, () -> {
-            Nif nif = new Nif ("40235234f");
+            SmallCode smallCode = new SmallCode ("38c");
         });
     }
 
     @Test
     void testEquals() throws NotCorrectFormatException {
-        Nif nif1 = new Nif ("40235234F");
-        Nif nif2 = new Nif ("40235234F");
-        Nif nif3 = new Nif ("40235234C");
-        Nif nif4 = new Nif ("39235234F");
-        assertEquals(nif1, nif2);
-        assertNotEquals(nif1, nif3);
-        assertNotEquals(nif1, nif4);
+        SmallCode smallCode1 = new SmallCode ("376");
+        SmallCode smallCode2 = new SmallCode ("376");
+        SmallCode smallCode3 = new SmallCode ("379");
+        assertEquals(smallCode1, smallCode2);
+        assertNotEquals(smallCode1, smallCode3);
     }
 
     @Test
     void testToString() throws NotCorrectFormatException {
-        Nif nif = new Nif ("40235234F");
-        System.out.println(nif);
+        SmallCode smallCode = new SmallCode ("523");
+        System.out.println(smallCode);
     }
 }
