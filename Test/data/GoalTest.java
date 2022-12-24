@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class GoalTest {
+
     @Test
     void testConstructor() {
         assertThrows(NullPointerException.class, () -> {
