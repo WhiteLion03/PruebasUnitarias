@@ -2,16 +2,15 @@ package publicadministration;
 
 import java.util.Date;
 
-public class CrimConviction {
+public class CrimeConviction {
+    private final Date commitDate;
+    private final String offense;
+    private final String sentence;
 
-    private Date commitDate;
-    private String offense;
-    private String sentence;
-
-    public CrimConviction (Date commit, String off, String sentc) {
+    public CrimeConviction(Date commit, String off, String sent) {
         this.commitDate = commit;
         this.offense = off;
-        this.sentence = sentc;
+        this.sentence = sent;
     }
 
     public Date getCommitDate() {

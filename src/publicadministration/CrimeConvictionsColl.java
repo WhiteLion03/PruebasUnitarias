@@ -3,20 +3,20 @@ package publicadministration;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class CrimConvictionsColl {
+public class CrimeConvictionsColl {
 
-    ArrayList<CrimConviction> convictions;
+    ArrayList<CrimeConviction> convictions;
 
-    public CrimConvictionsColl() {
+    public CrimeConvictionsColl() {
         convictions = new ArrayList<>();
     }
 
-    public void addCriminalConviction (CrimConviction crmC) {
+    public void addCriminalConviction (CrimeConviction crmC) {
         convictions.add(crmC);
     }
 
-    public CrimConviction getCrimConviction (Date date) {
-        for(CrimConviction conviction : convictions) {
+    public CrimeConviction getCrimeConviction(Date date) {
+        for(CrimeConviction conviction : convictions) {
             if(conviction.getCommitDate().equals(date)) {
                 return conviction;
             }
@@ -26,7 +26,7 @@ public class CrimConvictionsColl {
 
     @Override
     public String toString() {
-        return "CrimConvictionsColl{" +
+        return "CrimeConvictionsColl{" +
                 "convictions=" + convictions +
                 '}';
     }

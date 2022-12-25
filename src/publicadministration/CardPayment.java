@@ -6,17 +6,17 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class CardPayment {
-
     private final String reference;
     private final Nif nif;
     private final Date date;
     private final BigDecimal importe;
 
+    // TODO falta el CardPayment.reference
     public CardPayment (Nif nif, BigDecimal imp) {
         this.nif = nif;
         this.importe = imp;
         this.reference = "He de mirar com és fa això";
-        this.date = getDate();
+        this.date = new Date();
     }
 
     public String getReference() {

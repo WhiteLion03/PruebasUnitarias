@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class CreditCard {
 
-    private Nif nif;
+    private final Nif nif;
     private final String cardNumb;
     private final Date expirDate;
     private final SmallCode svc;
