@@ -27,6 +27,10 @@ public class Citizen {
         return mobileNumb;
     }
 
+    public Nif getNif() { return nif; }
+
+
+
     public void setName(String name) {
         this.name = name;
     }
@@ -39,13 +43,11 @@ public class Citizen {
         this.mobileNumb = mobileNumb;
     }
 
+
     @Override
     public String toString() {
         return "Citizen{" +
                 "nif=" + nif +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", mobileNumb='" + mobileNumb + '\'' +
                 '}';
     }
 }
