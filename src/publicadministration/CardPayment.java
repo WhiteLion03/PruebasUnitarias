@@ -4,6 +4,7 @@ import data.Nif;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 public class CardPayment {
     private final String reference;
@@ -15,7 +16,7 @@ public class CardPayment {
     public CardPayment (Nif nif, BigDecimal imp) {
         this.nif = nif;
         this.importe = imp;
-        this.reference = "He de mirar com és fa això";
+        this.reference = generateReference();
         this.date = new Date();
     }
 
@@ -34,6 +35,11 @@ public class CardPayment {
     public BigDecimal getImporte() {
         return importe;
     }
+
+    private String generateReference() {
+        return UUID.randomUUID().toString();
+    }
+
 
     @Override
     public String toString() {
