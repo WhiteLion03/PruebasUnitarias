@@ -5,17 +5,16 @@ import data.Nif;
 import java.util.Date;
 
 public class UnifiedPlatform {
-    /*// The class members
+    // The class members
     private Nif nif;
     private Date valDate;
+    private byte selectedOption;
 
-    //enterNIFandPINobt
     UnifiedPlatform (Nif nif, Date valDate) {
         this.nif = nif;
         this.valDate = valDate;
     }
 
-    //enterPIN
     UnifiedPlatform (Nif nif) {
         this.nif = nif;
     }
@@ -23,8 +22,10 @@ public class UnifiedPlatform {
     // Input events
     public void selectJusMin () { System.out.println("Has entrat a la secció 'Ministeri de justícia'"); };
     public void selectProcedures () { System.out.println("Has entrat a la secció 'Tràmits' del Ministeri de justícia"); };
-    public void selectCriminalReportCertf () { . . . };
-    public void selectAuthMethod (byte opc) { . . . };
+    public void selectCriminalReportCertf () { "Has seleccionat el tràmit 'Obtenir certificat d'antecedents penals'" };
+    public void selectAuthMethod (byte opc) {
+        this.selectedOption = opc;
+    }
     public void enterNIFandPINobt (Nif nif, Date valDate) { . . . } throws
     NifNotRegisteredException, IncorrectValDateException,
     AnyMobileRegisteredException, ConnectException;
@@ -48,5 +49,5 @@ throws IncompleteFormException, NotValidPaymentDataException,
     private void registerPayment () { . . . };
     private void openDocument (DocPath path) { . . . } throws BadPathException;
     private void printDocument (DocPath path) { . . . }
-throws BadPathException, PrintingException;*/
+throws BadPathException, PrintingException;
 }
