@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class NifTest {
 
     @Test
-    void testConstructor() {
+    void constructorTest() {
         assertThrows(NullPointerException.class, () -> {
             Nif nif = new Nif (null);
         });
@@ -27,7 +27,7 @@ class NifTest {
     }
 
     @Test
-    void testEquals() throws NotCorrectFormatException {
+    void equalsTest() throws NotCorrectFormatException {
         Nif nif1 = new Nif ("40235234F");
         Nif nif2 = new Nif ("40235234F");
         Nif nif3 = new Nif ("40235234C");
@@ -38,7 +38,7 @@ class NifTest {
     }
 
     @Test
-    void testToString() throws NotCorrectFormatException {
+    void toStringTest() throws NotCorrectFormatException {
         Nif nif = new Nif ("40235234F");
         System.out.println(nif);
     }
