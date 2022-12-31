@@ -11,11 +11,16 @@ import data.DocPath;
 public class PDFDocument {
     private final Date creatDate;
     private DocPath path;
-    private File file;
+    private final File file;
 
+    /***
+     * Crea un documento PDF en la carpeta de descargas dentro de la de usuario de windows
+     * @throws IOException si la ruta "c:\Users\<user.home>\Downloads" no existiera o ya existiera un archivo en dicha
+     * ruta con el mismo nombre
+     */
     public PDFDocument() throws IOException {
         this.path = new DocPath(System.getProperty("user.home") + "\\Downloads");
-        this.file = new File(path.getPath() + "\\document.pdf");
+        this.file = new File(path.getPath() + "\\criminal_record_certf.pdf");
         if (!file.createNewFile()) throw new IOException("El archivo no se ha podido crear");
         this.creatDate = new Date();
     }
@@ -28,6 +33,13 @@ public class PDFDocument {
         return path;
     }
 
+    /***
+     * Mueve el documento a otra carpeta, si el documento ya existe en dicha carpeta lanza IOException
+     * @param destPath ruta de destino
+     * @return true si se ha podido mover
+     * @throws IOException si el archivo a mover no existe, la ruta de destino no existe o no es directorio i la ruta de
+     * destino ya contiene un archivo con el mismo nombre.
+     */
     public boolean moveDoc(DocPath destPath) throws IOException{
         if (!file.exists()) {
             throw new IOException("El archivo a mover no existe");
@@ -45,15 +57,11 @@ public class PDFDocument {
         return true;
     }
 
+    /***
+     * Abre el documento
+     * @throws IOException si no puede abrirlo porque no existe
+     */
     public void openDoc() throws IOException {
         Desktop.getDesktop().open(file);
-
-       /* try {
-            File path = new File ("temp\laboralLife.pdf");
-            Desktop.getDesktop().open(path);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        */
     }
 }

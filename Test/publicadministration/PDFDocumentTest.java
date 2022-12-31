@@ -21,6 +21,9 @@ class PDFDocumentTest {
     @Test
     void moveDocTest() throws IOException {
         PDFDocument doc = new PDFDocument();
+        assertThrows(IOException.class, () -> {
+            doc.moveDoc(new DocPath(System.getProperty("user.home") + "\\hbkbnoi\\"));
+        });
         assertTrue(doc.moveDoc(new DocPath(System.getProperty("user.home") + "\\Documents\\")));
     }
 
