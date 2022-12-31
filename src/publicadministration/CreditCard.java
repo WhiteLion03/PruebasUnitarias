@@ -2,22 +2,33 @@ package publicadministration;
 
 
 import data.Nif;
+import data.NotCorrectFormatException;
 import data.SmallCode;
 
 import java.util.Date;
 
 public class CreditCard {
 
-    private Nif nif;
+    private final Nif nif;
     private final String cardNumb;
     private final Date expirDate;
     private final SmallCode svc;
 
-    public CreditCard (Nif nif, String cNum, Date d, SmallCode c) {
+    public CreditCard (Nif nif, String cNum, Date d, SmallCode c) throws NotCorrectFormatException {
         this.nif = nif;
-        this.cardNumb = cNum;
-        this.expirDate = d;
         this.svc = c;
+
+        if (cNum.length() == 16) {
+            this.cardNumb = cNum;
+        } else {
+            throw new NotCorrectFormatException("Número de tarjeta no válido");
+        }
+
+        if (d.compareTo(new Date()) > 0) {
+            this.expirDate = d;
+        } else {
+            throw new NotCorrectFormatException("La tarjeta está caducada");
+        }
     }
 
     public Nif getNif() {

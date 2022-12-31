@@ -3,14 +3,15 @@ package publicadministration;
 import data.Nif;
 
 public class Citizen {
-    private Nif nif;
+    private final Nif nif;
     private String name;
-    private String adress;
+    private String address;
     private String mobileNumb;
 
-    public Citizen (String name, String add, String mobile) {
+    public Citizen (Nif nif, String name, String add, String mobile) {
+        this.nif = nif;
         this.name = name;
-        this.adress = add;
+        this.address = add;
         this.mobileNumb = mobile;
     }
 
@@ -18,21 +19,35 @@ public class Citizen {
         return name;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
     public String getMobileNumb() {
         return mobileNumb;
     }
 
+    public Nif getNif() { return nif; }
+
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setMobileNumb(String mobileNumb) {
+        this.mobileNumb = mobileNumb;
+    }
+
+
     @Override
     public String toString() {
         return "Citizen{" +
                 "nif=" + nif +
-                ", name='" + name + '\'' +
-                ", adress='" + adress + '\'' +
-                ", mobileNumb='" + mobileNumb + '\'' +
                 '}';
     }
 }

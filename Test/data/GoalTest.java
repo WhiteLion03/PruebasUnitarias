@@ -8,14 +8,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class GoalTest {
 
     @Test
-    void testConstructor() {
+    void constructorTest() {
         assertThrows(NullPointerException.class, () -> {
             Goal goal = new Goal (null);
         });
     }
 
     @Test
-    void testEquals() {
+    void equalsTest() {
         Goal goal1 = new Goal(goalTypes.PUBLIC_WORKERS);
         Goal goal2 = new Goal(goalTypes.PUBLIC_WORKERS);
         Goal goal3 = new Goal(goalTypes.PUBLIC_ADMIN_CONSORTIUM);
@@ -24,7 +24,7 @@ public class GoalTest {
     }
 
     @Test
-    void testToString() {
+    void toStringTest() {
         Goal goal = new Goal(goalTypes.GAME_SECTOR);
         System.out.println(goal);
     }
