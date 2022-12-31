@@ -4,20 +4,20 @@ import data.DigitalSignature;
 import data.Goal;
 import data.Nif;
 
-public class CriminalRecordCertf extends PDFDocument {
+public class CriminalRecordCertf {
 
     private Nif nif;
     private String name;
     private Goal goal;
     private DigitalSignature digSign;
-    private CrimeConvictionsColl crimConvs;
+    private CrimeConvictionsColl crimeConvictions;
 
     public CriminalRecordCertf (Nif nif, String name, Goal g, DigitalSignature ds, CrimeConvictionsColl crmC) {
         this.nif = nif;
         this.name = name;
         this. goal = g;
         this.digSign = ds;
-        this.crimConvs = crmC;
+        this.crimeConvictions = crmC;
     }
 
     public Nif getNif() {
@@ -36,7 +36,7 @@ public class CriminalRecordCertf extends PDFDocument {
         return digSign;
     }
 
-    public CrimeConvictionsColl getCrimConvs() {
-        return crimConvs;
+    public CrimeConvictionsColl getCrimeConvictions() {
+        return crimeConvictions;
     }
 }

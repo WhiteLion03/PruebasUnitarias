@@ -6,6 +6,6 @@ import publicadministration.CriminalRecordCertf;
 
 import java.net.ConnectException;
 
-public interface JusticeMinistery {
+public interface JusticeMinistry {
     CriminalRecordCertf getCriminalRecordCertf (Citizen persD, Goal g) throws DigitalSignatureException, ConnectException;
 }

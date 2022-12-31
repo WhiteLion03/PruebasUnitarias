@@ -5,18 +5,18 @@ import java.util.Date;
 
 public class CrimeConvictionsColl {
 
-    ArrayList<CrimeConviction> convictions;
+    ArrayList<CrimeConviction> crimeConvictions;
 
     public CrimeConvictionsColl() {
-        convictions = new ArrayList<>();
+        crimeConvictions = new ArrayList<>();
     }
 
-    public void addCriminalConviction (CrimeConviction crmC) {
-        convictions.add(crmC);
+    public void addCriminalConviction(CrimeConviction crmC) {
+        crimeConvictions.add(crmC);
     }
 
     public CrimeConviction getCrimeConviction(Date date) {
-        for(CrimeConviction conviction : convictions) {
+        for(CrimeConviction conviction : crimeConvictions) {
             if(conviction.getCommitDate().equals(date)) {
                 return conviction;
             }
@@ -27,7 +27,7 @@ public class CrimeConvictionsColl {
     @Override
     public String toString() {
         return "CrimeConvictionsColl{" +
-                "convictions=" + convictions +
+                "convictions=" + crimeConvictions +
                 '}';
     }
 }
