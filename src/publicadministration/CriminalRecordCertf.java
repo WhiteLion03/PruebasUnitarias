@@ -4,18 +4,22 @@ import data.DigitalSignature;
 import data.Goal;
 import data.Nif;
 
-public class CriminalRecordCertf {
+import java.io.IOException;
 
-    private Nif nif;
-    private String name;
-    private Goal goal;
-    private DigitalSignature digSign;
-    private CrimeConvictionsColl crimeConvictions;
+public class CriminalRecordCertf extends PDFDocument {
 
-    public CriminalRecordCertf (Nif nif, String name, Goal g, DigitalSignature ds, CrimeConvictionsColl crmC) {
+    private final Nif nif;
+    private final String name;
+    private final Goal goal;
+    private final DigitalSignature digSign;
+    private final CrimeConvictionsColl crimeConvictions;
+
+    public CriminalRecordCertf(Nif nif, String name, Goal g, DigitalSignature ds, CrimeConvictionsColl crmC)
+            throws IOException {
+        super();
         this.nif = nif;
         this.name = name;
-        this. goal = g;
+        this.goal = g;
         this.digSign = ds;
         this.crimeConvictions = crmC;
     }

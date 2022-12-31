@@ -45,8 +45,8 @@ public class PDFDocument {
         return true;
     }
 
-    public void openDoc (DocPath path) throws IOException {
-        Desktop.getDesktop().open(new File(path.toString()));
+    public void openDoc() throws IOException {
+        Desktop.getDesktop().open(file);
 
        /* try {
             File path = new File ("temp\laboralLife.pdf");

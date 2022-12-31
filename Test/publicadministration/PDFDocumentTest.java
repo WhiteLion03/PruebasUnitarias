@@ -25,7 +25,8 @@ class PDFDocumentTest {
     }
 
     @Test
-    void openDocTest() {
-
+    void openDocTest() throws IOException {
+        PDFDocument doc = new PDFDocument();
+        doc.openDoc();
     }
 }
