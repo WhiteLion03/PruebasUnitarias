@@ -5,6 +5,7 @@ import data.Goal;
 import data.Nif;
 import data.SmallCode;
 import publicadministration.Citizen;
+import publicadministration.CreditCard;
 import services.*;
 
 import java.net.ConnectException;
@@ -42,7 +43,7 @@ public class UnifiedPlatform {
                 throw new AnyMobileRegisteredException("No estás registrado en el sistema Cl@ve PIN");
             }
             //Què vol dir el Nif y la fecha del ciudadano no corresponden??
-        }catch(ConnectException | AnyMobileRegisteredException e){
+        }catch(ConnectException e){
             throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
         }
     }
@@ -58,13 +59,23 @@ public class UnifiedPlatform {
                 this.citizen = citz;
                 this.goal = goal;
             }
-        }catch(ConnectException | IncorrectVerificationException e){
+        }catch(ConnectException e){
             throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
         }
     }
 
     private void realizePayment () { . . . };
-    private void enterCardData (CreditCard cardD) { . . . }
+    private void enterCardData (CreditCard cardD) throws IncompleteFormException, NotValidPaymentDataException,
+            InsufficientBalanceException, ConnectException;{
+                try{
+                    if(cardD.nif == null || cardD.cardNum == null || cardD.expirDate == null || cardD.svc == null){
+                        throw new IncompleteFormException("El formulario no está completo");
+                    }
+                }catch(ConnectException e){
+                    throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
+                }
+
+    }
 throws IncompleteFormException, NotValidPaymentDataException,
     InsufficientBalanceException, ConnectException;
     private void obtainCertificate () { . . . } throws BadPathException,
