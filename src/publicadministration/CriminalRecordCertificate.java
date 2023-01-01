@@ -6,7 +6,7 @@ import data.Nif;
 
 import java.io.IOException;
 
-public class CriminalRecordCertf extends PDFDocument {
+public class CriminalRecordCertificate extends PDFDocument {
 
     private final Nif nif;
     private final String name;
@@ -14,7 +14,7 @@ public class CriminalRecordCertf extends PDFDocument {
     private final DigitalSignature digSign;
     private final CrimeConvictionsColl crimeConvictions;
 
-    public CriminalRecordCertf(Nif nif, String name, Goal g, DigitalSignature ds, CrimeConvictionsColl crmC)
+    public CriminalRecordCertificate(Nif nif, String name, Goal g, DigitalSignature ds, CrimeConvictionsColl crmC)
             throws IOException {
         super();
         this.nif = nif;
