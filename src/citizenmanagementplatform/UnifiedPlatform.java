@@ -1,7 +1,9 @@
 package citizenmanagementplatform;
 
+import data.Goal;
 import data.Nif;
 import data.SmallCode;
+import publicadministration.Citizen;
 import services.*;
 
 import java.net.ConnectException;
@@ -12,6 +14,8 @@ public class UnifiedPlatform {
     private Nif nif;
     private Date valDate;
     private byte selectedOption;
+    Citizen citizen;
+    Goal goal;
 
     UnifiedPlatform (Nif nif, Date valDate) {
         this.nif = nif;
@@ -43,9 +47,22 @@ public class UnifiedPlatform {
     } throws NifNotRegisteredException, IncorrectValDateException, AnyMobileRegisteredException, ConnectException;
     public void enterPIN (SmallCode pin) { . . . } throws NotValidPINException,
     ConnectException;
-    private void enterForm (Citizen citz, Goal goal) { . . . }
-throws IncompleteFormException, IncorrectVerificationException,
-    ConnectException;
+    private void enterForm (Citizen citz, Goal goal) {
+        try{
+            if(citz == null || goal == null){
+                throw new IncompleteFormException("El formulario no está completo");
+            }else if (!GPD.verifyData(citz, goal)){
+                throw new IncorrectVerificationException("La información no es correcta");
+            }else{
+                this.citizen = citz;
+                this.goal = goal;
+            }
+        }catch(ConnectException e){
+            throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
+        }
+
+    }
+throws IncompleteFormException, IncorrectVerificationException, ConnectException;
     private void realizePayment () { . . . };
     private void enterCardData (CreditCard cardD) { . . . }
 throws IncompleteFormException, NotValidPaymentDataException,
