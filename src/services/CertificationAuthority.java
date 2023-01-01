@@ -1,5 +1,9 @@
 package services;
 
+import Exceptions.AnyMobileRegisteredException;
+import Exceptions.IncorrectValDateException;
+import Exceptions.NifNotRegisteredException;
+import Exceptions.NotValidPINException;
 import data.Nif;
 import data.SmallCode;
 

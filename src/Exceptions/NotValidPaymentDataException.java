@@ -1,4 +1,4 @@
-package services;
+package Exceptions;
 
 public class NotValidPaymentDataException extends Exception {
     public NotValidPaymentDataException(String message) {

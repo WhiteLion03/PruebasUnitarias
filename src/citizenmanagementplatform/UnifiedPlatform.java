@@ -1,5 +1,6 @@
 package citizenmanagementplatform;
 
+import Exceptions.*;
 import data.Goal;
 import data.Nif;
 import data.SmallCode;
@@ -33,7 +34,7 @@ public class UnifiedPlatform {
     public void selectAuthMethod (byte opc) {
         this.selectedOption = opc;
     }
-    public void enterNIFandPINobt (Nif nif, Date valDate) {
+    public void enterNIFandPINobt (Nif nif, Date valDate) throws NifNotRegisteredException, IncorrectValDateException, AnyMobileRegisteredException, ConnectException {
         try{
             CertificationAuthority certificationAuthority = new CertificationAuthority();
             //S'ha de fer una clase per CertificationAuthority ¿?
@@ -41,13 +42,13 @@ public class UnifiedPlatform {
                 throw new AnyMobileRegisteredException("No estás registrado en el sistema Cl@ve PIN");
             }
             //Què vol dir el Nif y la fecha del ciudadano no corresponden??
-        }catch(ConnectException e){
+        }catch(ConnectException | AnyMobileRegisteredException e){
             throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
         }
-    } throws NifNotRegisteredException, IncorrectValDateException, AnyMobileRegisteredException, ConnectException;
-    public void enterPIN (SmallCode pin) { . . . } throws NotValidPINException,
-    ConnectException;
-    private void enterForm (Citizen citz, Goal goal) {
+    }
+    public void enterPIN (SmallCode pin) throws NotValidPINException, ConnectException { . . . }
+
+    private void enterForm(Citizen citz, Goal goal) throws IncompleteFormException, IncorrectVerificationException, ConnectException {
         try{
             if(citz == null || goal == null){
                 throw new IncompleteFormException("El formulario no está completo");
@@ -57,12 +58,11 @@ public class UnifiedPlatform {
                 this.citizen = citz;
                 this.goal = goal;
             }
-        }catch(ConnectException e){
+        }catch(ConnectException | IncorrectVerificationException e){
             throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
         }
-
     }
-throws IncompleteFormException, IncorrectVerificationException, ConnectException;
+
     private void realizePayment () { . . . };
     private void enterCardData (CreditCard cardD) { . . . }
 throws IncompleteFormException, NotValidPaymentDataException,

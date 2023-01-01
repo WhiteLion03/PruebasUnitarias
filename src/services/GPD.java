@@ -1,5 +1,6 @@
 package services;
 
+import Exceptions.IncorrectVerificationException;
 import data.Goal;
 import publicadministration.Citizen;
 

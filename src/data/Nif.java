@@ -1,5 +1,7 @@
 package data;
 
+import Exceptions.NotCorrectFormatException;
+
 public class Nif {
     private final String nif;
 

@@ -1,4 +1,4 @@
-package services;
+package Exceptions;
 
 public class AnyMobileRegisteredException extends Exception{
     public AnyMobileRegisteredException(String message){

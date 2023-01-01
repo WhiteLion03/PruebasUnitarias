@@ -1,12 +1,10 @@
 package publicadministration;
 
 import data.Nif;
-import data.NotCorrectFormatException;
+import Exceptions.NotCorrectFormatException;
 import data.SmallCode;
-import data.SmallCodeTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
