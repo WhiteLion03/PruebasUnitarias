@@ -1,7 +1,10 @@
 package citizenmanagementplatform;
 
 import data.Nif;
+import data.SmallCode;
+import services.*;
 
+import java.net.ConnectException;
 import java.util.Date;
 
 public class UnifiedPlatform {
@@ -26,9 +29,18 @@ public class UnifiedPlatform {
     public void selectAuthMethod (byte opc) {
         this.selectedOption = opc;
     }
-    public void enterNIFandPINobt (Nif nif, Date valDate) { . . . } throws
-    NifNotRegisteredException, IncorrectValDateException,
-    AnyMobileRegisteredException, ConnectException;
+    public void enterNIFandPINobt (Nif nif, Date valDate) {
+        try{
+            CertificationAuthority certificationAuthority = new CertificationAuthority();
+            //S'ha de fer una clase per CertificationAuthority ¿?
+            if (!certificationAuthority.sendPIN(nif, valDate)){
+                throw new AnyMobileRegisteredException("No estás registrado en el sistema Cl@ve PIN");
+            }
+            //Què vol dir el Nif y la fecha del ciudadano no corresponden??
+        }catch(ConnectException e){
+            throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
+        }
+    } throws NifNotRegisteredException, IncorrectValDateException, AnyMobileRegisteredException, ConnectException;
     public void enterPIN (SmallCode pin) { . . . } throws NotValidPINException,
     ConnectException;
     private void enterForm (Citizen citz, Goal goal) { . . . }
