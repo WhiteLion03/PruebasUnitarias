@@ -94,7 +94,7 @@ class UnifiedPlatformTest {
     }
 
     @Test
-    public void enterPIN() {
+    public void enterPINTest() {
         try {
             // Cualquier combinación de navegación por el menú
             enterNIFAndPINObtTest();
@@ -105,5 +105,17 @@ class UnifiedPlatformTest {
             fail();
         }
     }
+
+    @Test
+    public void realizePaymentTest(){
+        try{
+            application.realizePayment();
+            assertEquals(Menu.CARD_DATA_FORM, application.getMenu());
+        }catch (ProceduralException e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
+    }
+
 
 }
