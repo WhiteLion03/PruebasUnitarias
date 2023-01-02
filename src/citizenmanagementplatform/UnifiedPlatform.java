@@ -59,6 +59,11 @@ public class UnifiedPlatform {
         return nif;
     }
 
+    // The setters
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
     // Input events
     public void selectJusMin() throws ProceduralException {
         if (this.menu == Menu.MAIN_PAGE || this.menu == Menu.JUSTICE_MINISTRY_PROCEDURES) {

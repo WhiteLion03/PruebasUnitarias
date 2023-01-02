@@ -51,6 +51,9 @@ class UnifiedPlatformTest {
             System.out.println(e.getMessage());
             fail();
         }
+        assertThrows(ProceduralException.class, () -> {
+            application.selectJusMin();
+        });
     }
 
     @Test
