@@ -8,6 +8,7 @@ public class CrimeConviction {
     private final String sentence;
 
     public CrimeConviction(Date commit, String off, String sent) {
+        if (off == null || sent == null) throw new NullPointerException("Un parámetro es null");
         this.commitDate = commit;
         this.offense = off;
         this.sentence = sent;
