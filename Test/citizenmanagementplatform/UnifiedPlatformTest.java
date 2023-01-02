@@ -1,14 +1,20 @@
 package citizenmanagementplatform;
 
 import Exceptions.*;
+import data.Goal;
 import data.Nif;
 import data.SmallCode;
+import data.goalTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import publicadministration.Citizen;
+import publicadministration.CreditCard;
+import services.CertificationAuthority;
 
 import java.net.ConnectException;
 import java.util.Date;
 
+import static citizenmanagementplatform.Menu.CERTIFICATE_OPTIONS;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnifiedPlatformTest {
@@ -70,7 +76,7 @@ class UnifiedPlatformTest {
             // Cualquier combinación de navegación por el menú
             selectCriminalReportCertificateTest();
             application.selectAuthMethod((byte) 1);
-            assertEquals(Menu.AUTHENTICATE_CLAVE, application.getMenu());
+            assertEquals(Menu.AUTHENTICATE_CLAVE_PIN, application.getMenu());
         } catch (ProceduralException e) {
             System.out.println(e.getMessage());
             fail();
@@ -83,7 +89,7 @@ class UnifiedPlatformTest {
             // Cualquier combinación de navegación por el menú
             selectAuthMethodTest();
             application.enterNIFAndPINObt(new Nif("48281063S"), new Date());
-            assertEquals(Menu.AUTHENTICATE_CLAVE_CHECK, application.getMenu());
+            assertEquals(Menu.AUTHENTICATE_CLAVE_PIN_CHECK, application.getMenu());
             assertEquals(new Nif("48281063S"), application.getNif());
         } catch (ProceduralException | NotCorrectFormatException | NifNotRegisteredException |
                  IncorrectValDateException | AnyMobileRegisteredException | ConnectException e) {
@@ -106,11 +112,27 @@ class UnifiedPlatformTest {
     }
 
     @Test
+    void enterFormTest() throws NotCorrectFormatException {
+        try {
+            enterPINTest();
+            Citizen pax1 = new Citizen(new Nif("12344567V"), "Laura", "Carrer Major 50", "652143598");
+            Goal g1 = new Goal(goalTypes.PUBLIC_WORKERS);
+            application.enterForm(pax1, g1);
+            assertEquals(Menu.SHOW_AMOUNT_TO_PAY, application.getMenu());
+        } catch (ProceduralException  | IncompleteFormException | IncorrectVerificationException | ConnectException e ) {
+            System.out.println(e.getMessage());
+            fail();
+
+        }
+    }
+
+    @Test
     public void realizePaymentTest(){
         try{
+            enterFormTest();
             application.realizePayment();
             assertEquals(Menu.CARD_DATA_FORM, application.getMenu());
-        }catch (ProceduralException e) {
+        }catch (ProceduralException | NotCorrectFormatException e) {
             System.out.println(e.getMessage());
             fail();
         }
@@ -118,6 +140,17 @@ class UnifiedPlatformTest {
 
     @Test
     public void enterCardDataTest(){
+        try {
+            realizePaymentTest();
+            CreditCard cc = new CreditCard(new Nif("12345678G"), "4111111111111111", new Date(2022,
+                    11, 31), new SmallCode("345"));
+            application.enterCardData(cc);
+            assertEquals(CERTIFICATE_OPTIONS, application.getMenu());
+        } catch (NotCorrectFormatException | NotValidPaymentDataException | IncompleteFormException
+                | InsufficientBalanceException | ProceduralException | ConnectException e ) {
+            System.out.println(e.getMessage());
+            fail();
+        }
 
     }
 }
