@@ -1,7 +1,6 @@
 package publicadministration;
 
 import data.DocPath;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +10,6 @@ class PDFDocumentTest {
 
     @Test
     void constructorTest() throws IOException {
-        //PDFDocument doc = new PDFDocument();
         assertThrows(IOException.class, () -> {
             PDFDocument doc = new PDFDocument();
             PDFDocument doc2 = new PDFDocument();

@@ -15,15 +15,14 @@ public class CreditCard {
     private final SmallCode svc;
 
     public CreditCard (Nif nif, String cNum, Date d, SmallCode c) throws NotCorrectFormatException {
+        if (cNum == null) throw new NullPointerException("Un parámetro es null");
         this.nif = nif;
         this.svc = c;
-
         if (cNum.length() == 16) {
             this.cardNumb = cNum;
         } else {
             throw new NotCorrectFormatException("Número de tarjeta no válido");
         }
-
         if (d.compareTo(new Date()) > 0) {
             this.expirDate = d;
         } else {

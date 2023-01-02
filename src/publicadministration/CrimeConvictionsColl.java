@@ -25,6 +25,21 @@ public class CrimeConvictionsColl {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CrimeConvictionsColl)) return false;
+
+        CrimeConvictionsColl that = (CrimeConvictionsColl) o;
+
+        return crimeConvictions != null ? crimeConvictions.equals(that.crimeConvictions) : that.crimeConvictions == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return crimeConvictions != null ? crimeConvictions.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "CrimeConvictionsColl{" +
                 "convictions=" + crimeConvictions +

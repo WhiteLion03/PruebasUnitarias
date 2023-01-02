@@ -20,7 +20,7 @@ public class PDFDocument {
      */
     public PDFDocument() throws IOException {
         this.path = new DocPath(System.getProperty("user.home") + "\\Downloads");
-        this.file = new File(path.getPath() + "\\criminal_record_certf.pdf");
+        this.file = new File(path.getPath() + "\\criminal_record_certificate.pdf");
         if (!file.createNewFile()) throw new IOException("El archivo no se ha podido crear");
         this.creatDate = new Date();
     }
