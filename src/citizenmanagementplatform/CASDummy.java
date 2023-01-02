@@ -14,6 +14,6 @@ import java.util.Date;
 public class CASDummy implements services.CAS{
     @Override
     public boolean askForApproval(String nTrans, CreditCard cardData, Date date, BigDecimal imp) throws NotValidPaymentDataException, InsufficientBalanceException, ConnectException {
-        return false;
+        return true;
     }
 }
