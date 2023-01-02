@@ -85,9 +85,10 @@ public class UnifiedPlatform {
     }
 
     public void selectCriminalReportCertificate() throws ProceduralException {
-        if (this.menu == Menu.JUSTICE_MINISTRY_PROCEDURES || this.menu == Menu.AUTHENTICATE_CLAVE_PIN || this.menu == Menu.AUTHENTICATE_CLAVE_PIN_CHECK ||
+        if (this.menu == Menu.JUSTICE_MINISTRY_PROCEDURES || this.menu == Menu.AUTHENTICATE_CLAVE_PIN ||
+                this.menu == Menu.AUTHENTICATE_CLAVE_PIN_CHECK ||
                 this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS) {
-            if ((this.menu == Menu.AUTHENTICATE_CLAVE_PIN || this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS) && this.authOp == AuthenticateOption.CLAVE_PIN) {
+            if (this.authOp == AuthenticateOption.CLAVE_PIN) {
                 this.authOp = AuthenticateOption.NONE;
                 System.out.println("Su sesión iniciada mediante Cl@ve PIN se ha cerrado");
             }
@@ -105,60 +106,64 @@ public class UnifiedPlatform {
 
     public void selectAuthMethod(byte opc) throws ProceduralException {
         if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE) {
-            throw new ProceduralException("No estás en la página correcta para seleccionar esta opción");
-        }
-        if (opc == 1) {
-            this.menu = Menu.AUTHENTICATE_CLAVE_PIN;
-            System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez para recibir un código PIN en su teléfono\n");
+            if (opc == 1) {
+                this.menu = Menu.AUTHENTICATE_CLAVE_PIN;
+                System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez para recibir un código PIN en su teléfono\n");
+            } else {
+                throw new ProceduralException("Método de autenticación no disponible");
+            }
         } else {
-            throw new ProceduralException("Método de autenticación no disponible");
+            throw new ProceduralException("No estás en la página correcta para seleccionar esta opción");
         }
     }
 
     public void enterNIFAndPINObt(Nif nif, Date valDate) throws NifNotRegisteredException, IncorrectValDateException,
             AnyMobileRegisteredException, ConnectException, ProceduralException {
-        if (this.menu != Menu.AUTHENTICATE_CLAVE_PIN) {
+        if (this.menu == Menu.AUTHENTICATE_CLAVE_PIN) {
+            try {
+                if (certAuth.sendPIN(nif, valDate)) {
+                    this.nif = nif;
+                    this.menu = Menu.AUTHENTICATE_CLAVE_PIN_CHECK;
+                    System.out.println("Su NIF ha sido registrado correctamente i le han enviado un PIN a su teléfono para autenticarse. Entre el PIN\n");
+                } else {
+                    throw new ProceduralException("Ha habido un error de la autoridad de certificación en enviar el PIN, vuelve a intentarlo más tarde");
+                }
+            } catch (ConnectException e) {
+                throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
+            } catch (NifNotRegisteredException e) {
+                throw new NifNotRegisteredException("No estás registrado en el sistema Cl@ve PIN");
+            } catch (IncorrectValDateException e) {
+                throw new IncorrectValDateException("Su NIF y fecha de vàlidez no corresponden");
+            } catch (AnyMobileRegisteredException e) {
+                throw new AnyMobileRegisteredException("No ha registrado su número de teléfono");
+            }
+        } else {
             throw new ProceduralException("Error procedural, no se encuentra en el trámite 'Obtener certificado de" +
                     " antecedentes penales' o no ha escogido el método" +
                     " de autenticación Cl@ve PIN.");
-        }
-        try {
-            if (certAuth.sendPIN(nif, valDate)) {
-                this.nif = nif;
-                System.out.println("Su NIF ha sido registrado correctamente i le han enviado un PIN a su teléfono para autenticarse\n");
-            } else {
-                throw new ProceduralException("Ha habido un error de la autoridad de certificación en enviar el PIN, vuelve a intentarlo más tarde");
-            }
-        } catch (ConnectException e) {
-            throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
-        } catch (NifNotRegisteredException e) {
-            throw new NifNotRegisteredException("No estás registrado en el sistema Cl@ve PIN");
-        } catch (IncorrectValDateException e) {
-            throw new IncorrectValDateException("Su NIF y fecha de vàlidez no corresponden");
-        } catch (AnyMobileRegisteredException e) {
-            throw new AnyMobileRegisteredException("No ha registrado su número de teléfono");
         }
     }
 
     public void enterPIN(SmallCode pin) throws NotValidPINException,
             ConnectException, ProceduralException {
-        if (this.menu != Menu.AUTHENTICATE_CLAVE_PIN) {
+        if (this.menu == Menu.AUTHENTICATE_CLAVE_PIN_CHECK) {
+            try {
+                if (certAuth.checkPIN(this.nif, pin)) {
+                    this.authOp = AuthenticateOption.CLAVE_PIN;
+                    this.menu = Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS;
+                    System.out.println("Se ha autenticado correctamente\n");
+                } else {
+                    throw new NotValidPINException("El PIN introducido no es correcto o ha expirado");
+                }
+            } catch (ConnectException e) {
+                throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
+            } catch (NotValidPINException e) {
+                throw new NotValidPINException("El PIN introducido no es correcto o ha expirado");
+            }
+        } else {
             throw new ProceduralException("Error procedural, no se encuentra en el trámite 'Obtener certificado de" +
                     " antecedentes penales' o no ha escogido el método" +
                     " de autenticación Cl@ve PIN.");
-        }
-        try {
-            if (certAuth.checkPIN(this.nif, pin)) {
-                this.authOp = AuthenticateOption.CLAVE_PIN;
-                this.menu = Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS;
-                System.out.println("Se ha autenticado correctamente");
-            } else {
-                throw new NotValidPINException("El PIN introducido no es correcto o ha expirado");
-            }
-        } catch (ConnectException e) {
-            throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
-        } catch (NotValidPINException e) {
-            throw new NotValidPINException("El PIN introducido no es correcto o ha expirado");
         }
     }
 

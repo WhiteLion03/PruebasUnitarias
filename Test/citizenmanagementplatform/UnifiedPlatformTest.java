@@ -2,6 +2,7 @@ package citizenmanagementplatform;
 
 import Exceptions.*;
 import data.Nif;
+import data.SmallCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import services.CertificationAuthority;
@@ -70,7 +71,7 @@ class UnifiedPlatformTest {
             // Cualquier combinación de navegación por el menú
             selectCriminalReportCertificateTest();
             application.selectAuthMethod((byte) 1);
-            application.selectCriminalReportCertificate();
+            assertEquals(UnifiedPlatform.Menu.AUTHENTICATE_CLAVE_PIN, application.getMenu());
         } catch (ProceduralException e) {
             System.out.println(e.getMessage());
             fail();
@@ -83,6 +84,7 @@ class UnifiedPlatformTest {
             // Cualquier combinación de navegación por el menú
             selectAuthMethodTest();
             application.enterNIFAndPINObt(new Nif("48281063S"), new Date());
+            assertEquals(UnifiedPlatform.Menu.AUTHENTICATE_CLAVE_PIN_CHECK, application.getMenu());
             assertEquals(new Nif("48281063S"), application.getNif());
         } catch (ProceduralException | NotCorrectFormatException | NifNotRegisteredException |
                  IncorrectValDateException | AnyMobileRegisteredException | ConnectException e) {
@@ -93,7 +95,15 @@ class UnifiedPlatformTest {
 
     @Test
     public void enterPIN() {
-
+        try {
+            // Cualquier combinación de navegación por el menú
+            enterNIFAndPINObtTest();
+            application.enterPIN(new SmallCode("547"));
+            assertEquals(UnifiedPlatform.Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS, application.getMenu());
+        } catch (ProceduralException | NotCorrectFormatException | ConnectException | NotValidPINException e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
     }
 
 }
