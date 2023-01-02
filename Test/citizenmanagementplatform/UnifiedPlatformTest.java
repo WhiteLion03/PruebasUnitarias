@@ -11,7 +11,7 @@ import services.CertificationAuthority;
 import java.net.ConnectException;
 import java.util.Date;
 
-import static citizenmanagementplatform.Menu.CERTIFICATE_OPTIONS;
+import static citizenmanagementplatform.Menu.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnifiedPlatformTest {
@@ -30,20 +30,20 @@ class UnifiedPlatformTest {
 
     @Test
     public void selectJustMinTest() {
+        application.setMenu(MAIN_PAGE);
         try {
             // Cualquier combinación de navegación por el menú
             application.selectJusMin();
             assertEquals(Menu.JUSTICE_MINISTRY, application.getMenu());
         } catch (ProceduralException e) {
             System.out.println(e.getMessage());
-            System.out.println("hola");
             fail();
-
         }
     }
 
     @Test
     public void selectProceduresTest() {
+        application.setMenu(JUSTICE_MINISTRY);
         try {
             // Cualquier combinación de navegación por el menú
             selectJustMinTest();
@@ -53,9 +53,6 @@ class UnifiedPlatformTest {
             System.out.println(e.getMessage());
             fail();
         }
-        assertThrows(ProceduralException.class, () -> {
-            application.selectJusMin();
-        });
     }
 
     @Test

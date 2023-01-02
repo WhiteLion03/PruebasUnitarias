@@ -292,7 +292,8 @@ public class UnifiedPlatform {
         if(menu == Menu.CERTIFICATE_OPTIONS || authOp != AuthenticateOption.CLAVE_PIN){
             try{
                 certificate = justiceMinistry.getCriminalRecordCertificate(citizen, goal);
-                openDocument(certificate.getPath());
+                PDFDocument certificatePDF = (PDFDocument) certificate;
+                openDocument(certificatePDF.getPath());
                 this.menu = Menu.PDF_VIEWER;
                 System.out.println("Ya puedes ver el certificado.");
             } catch (ConnectException e){
