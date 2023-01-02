@@ -28,6 +28,7 @@ class UnifiedPlatformTest {
     @Test
     public void selectJustMinTest() {
         try {
+            // Cualquier combinación de navegación por el menú
             application.selectJusMin();
             assertEquals(UnifiedPlatform.Menu.JUSTICE_MINISTRY, application.getMenu());
         } catch (ProceduralException e) {
@@ -39,7 +40,8 @@ class UnifiedPlatformTest {
     @Test
     public void selectProceduresTest() {
         try {
-            application.selectJusMin();
+            // Cualquier combinación de navegación por el menú
+            selectJustMinTest();
             application.selectProcedures();
             assertEquals(UnifiedPlatform.Menu.JUSTICE_MINISTRY_PROCEDURES, application.getMenu());
         } catch (ProceduralException e) {
@@ -51,8 +53,8 @@ class UnifiedPlatformTest {
     @Test
     public void selectCriminalReportCertificateTest() {
         try {
-            application.selectJusMin();
-            application.selectProcedures();
+            // Cualquier combinación de navegación por el menú
+            selectProceduresTest();
             application.selectCriminalReportCertificate();
             assertEquals(UnifiedPlatform.Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE, application.getMenu());
         } catch (ProceduralException e) {
@@ -63,12 +65,12 @@ class UnifiedPlatformTest {
     }
 
     @Test
-    public void selectAuthMethod() {
+    public void selectAuthMethodTest() {
         try {
-            application.selectJusMin();
-            application.selectProcedures();
-            application.selectCriminalReportCertificate();
+            // Cualquier combinación de navegación por el menú
+            selectCriminalReportCertificateTest();
             application.selectAuthMethod((byte) 1);
+            application.selectCriminalReportCertificate();
         } catch (ProceduralException e) {
             System.out.println(e.getMessage());
             fail();
@@ -76,12 +78,10 @@ class UnifiedPlatformTest {
     }
 
     @Test
-    public void enterNIFAndPINObt() {
+    public void enterNIFAndPINObtTest() {
         try {
-            application.selectJusMin();
-            application.selectProcedures();
-            application.selectCriminalReportCertificate();
-            application.selectAuthMethod((byte) 1);
+            // Cualquier combinación de navegación por el menú
+            selectAuthMethodTest();
             application.enterNIFAndPINObt(new Nif("48281063S"), new Date());
             assertEquals(new Nif("48281063S"), application.getNif());
         } catch (ProceduralException | NotCorrectFormatException | NifNotRegisteredException |
@@ -89,6 +89,11 @@ class UnifiedPlatformTest {
             System.out.println(e.getMessage());
             fail();
         }
+    }
+
+    @Test
+    public void enterPIN() {
+
     }
 
 }
