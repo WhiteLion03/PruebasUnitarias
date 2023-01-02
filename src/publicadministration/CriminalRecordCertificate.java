@@ -17,6 +17,7 @@ public class CriminalRecordCertificate extends PDFDocument {
     public CriminalRecordCertificate(Nif nif, String name, Goal g, DigitalSignature ds, CrimeConvictionsColl crmC)
             throws IOException {
         super();
+        if (name == null) throw new NullPointerException("Hi ha un element que és null");
         this.nif = nif;
         this.name = name;
         this.goal = g;
