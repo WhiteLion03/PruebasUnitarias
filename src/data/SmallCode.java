@@ -44,6 +44,6 @@ public class SmallCode {
 
     @Override
     public String toString() {
-        return "SmallCode{" + "CVS tarjeta='" + this.code + '\'' + '}';
+        return "SmallCode{" + "código='" + this.code + '\'' + '}';
     }
 }

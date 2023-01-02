@@ -13,7 +13,7 @@ public class CardPayment {
     private final Date date;
     private final BigDecimal imp;
 
-    public CardPayment (Nif nif, BigDecimal imp) throws NotCorrectFormatException {
+    public CardPayment(Nif nif, BigDecimal imp) throws NotCorrectFormatException {
         this.nif = nif;
         this.reference = generateReference();
         this.date = new Date();
