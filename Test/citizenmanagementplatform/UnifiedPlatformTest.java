@@ -36,7 +36,9 @@ class UnifiedPlatformTest {
             assertEquals(Menu.JUSTICE_MINISTRY, application.getMenu());
         } catch (ProceduralException e) {
             System.out.println(e.getMessage());
+            System.out.println("hola");
             fail();
+
         }
     }
 
