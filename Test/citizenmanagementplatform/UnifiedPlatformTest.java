@@ -87,8 +87,8 @@ class UnifiedPlatformTest {
         try {
             selectAuthMethodTest();
             application.enterCred(new Nif("48281063S"), new Password("Hola1234"));
-        } catch (NifNotRegisteredException | AnyMobileRegisteredException |
-                NotCorrectFormatException | ConnectException | NotValidCredException e) {
+        } catch (NifNotRegisteredException | AnyMobileRegisteredException | NotCorrectFormatException |
+                 ConnectException | NotValidCredException | ProceduralException e) {
             System.out.println(e.getMessage());
             fail();
         }
