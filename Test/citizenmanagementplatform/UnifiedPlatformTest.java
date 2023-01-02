@@ -16,7 +16,7 @@ class UnifiedPlatformTest {
 
     @BeforeEach
     public void setUp() {
-        application = new UnifiedPlatform(new CertificationAuthorityDummy());
+        application = new UnifiedPlatform(new CertificationAuthorityDummy(), new JusticeMinistryDummy());
     }
 
     @Test

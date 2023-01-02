@@ -5,6 +5,7 @@ import publicadministration.*;
 import Exceptions.*;
 import data.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.util.Date;
@@ -21,6 +22,8 @@ public class UnifiedPlatform {
     }
     private AuthenticateOption authOp;
     private final CertificationAuthority certAuth;
+    private final JusticeMinistry justiceMinistry;
+    private CriminalRecordCertificate certificate;
     private GPD gpd;
     private CAS cas;
     private Nif nif;
@@ -29,10 +32,11 @@ public class UnifiedPlatform {
     private CardPayment payment;
 
     // The constructor
-    public UnifiedPlatform(CertificationAuthority certAuth) {
+    public UnifiedPlatform(CertificationAuthority certAuth, JusticeMinistry justiceMinistry) {
         this.menu = Menu.MAIN_PAGE;
         this.authOp = AuthenticateOption.NONE;
         this.certAuth = certAuth;
+        this.justiceMinistry = justiceMinistry;
         this.nif = null;
         this.citizen = null;
         this.goal = null;
@@ -187,27 +191,36 @@ public class UnifiedPlatform {
             if(cardD == null){
                 throw new IncompleteFormException("El formulario no está completo");
             }
-            if (cas.askForApproval("no se", cardD, new Date(), new BigDecimal(1))) {
+            if (cas.askForApproval("no se"/*Fem que es generi un codi unic?*/, cardD, new Date(), new BigDecimal(1))) {
                 this.payment = new CardPayment(this.nif, new BigDecimal(1));
+                registerPayment();
             } else {
                 throw new ConnectException("Ha habido un error comprobando el pago");
             }
         }catch (ConnectException e) {
             throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
-        } catch (NotCorrectFormatException e) {
+        }catch (NotCorrectFormatException e) {
             throw new RuntimeException(e);
         }
     }
 
-    /*
-    public void obtainCertificate() throws BadPathException,
-            DigitalSignatureException, ConnectException {
 
+    public void obtainCertificate() throws BadPathException, DigitalSignatureException, ConnectException, ProceduralException {
+        if(menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS || authOp != AuthenticateOption.CLAVE_PIN){
+            throw new ProceduralException("Error procedural, no se encuentra en el trámite 'Obtener certificado de" +
+                    " antecedentes penales' o no ha escogido el método" +
+                    " de autenticación Cl@ve PIN.");
+        }
+        try{
 
+            certificate = justiceMinistry.getCriminalRecordCertificate(citizen, goal);
+            openDocument(certificate.getPath());
+        } catch (ConnectException e){
+            throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
+        }
     }
 
-    public void printDocument() throws BadPathException,
-            PrintingException {
+    public void printDocument() throws BadPathException, PrintingException {
 
     }
 
@@ -218,7 +231,7 @@ public class UnifiedPlatform {
     private void openDocument(DocPath path) throws BadPathException {
 
     }
-
+    /*
     private void printDocument(DocPath path) throws BadPathException, PrintingException {
 
     }
