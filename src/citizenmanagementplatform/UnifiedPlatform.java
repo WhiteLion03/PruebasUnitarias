@@ -187,6 +187,7 @@ public class UnifiedPlatform {
     public void obtainCertificate() throws BadPathException,
             DigitalSignatureException, ConnectException {
 
+
     }
 
     public void printDocument() throws BadPathException,
