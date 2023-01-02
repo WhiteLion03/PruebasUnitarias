@@ -18,11 +18,13 @@ public class UnifiedPlatform {
     private final JusticeMinistry justiceMinistry;
     private final GPD gpd;
     private final CAS cas;
+
     private CriminalRecordCertificate certificate;
     private Nif nif;
     private Citizen citizen;
     private Goal goal;
     private CardPayment payment;
+    private int transfId;
 
     // The constructor
     public UnifiedPlatform(CertificationAuthority certAuth, JusticeMinistry justiceMinistry, GPD gpd, CAS cas) {
@@ -36,6 +38,7 @@ public class UnifiedPlatform {
         this.citizen = null;
         this.goal = null;
         this.payment = null;
+        this.transfId = 1;
         System.out.println("""
                 Bienvenido al menú principal de la aplicación 'Plataforma Unificada de Gestión Ciudadana'
                 Seleccione una Administración:
@@ -178,6 +181,7 @@ public class UnifiedPlatform {
                     this.citizen = citz;
                     this.goal = goal;
                     this.menu = Menu.SHOW_AMOUNT_TO_PAY;
+                    System.out.println("\n");
                 }
             }catch(ConnectException e){
                 throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
@@ -207,10 +211,17 @@ public class UnifiedPlatform {
                 if(cardD == null){
                     throw new IncompleteFormException("El formulario no está completo");
                 }
-                if (cas.askForApproval("no se"/*Fem que es generi un codi unic?*/, cardD, new Date(), new BigDecimal(1))) {
+                if (cas.askForApproval(transfId+"", cardD, new Date(), new BigDecimal(1))) {
                     this.payment = new CardPayment(this.nif, new BigDecimal(1));
                     registerPayment();
+                    transfId++;
                     this.menu = Menu.CERTIFICATE_OPTIONS;
+                    System.out.println("""
+                Ha entrado en la sección 'Seleccionar opciones de certificado'
+                Seleccione una opción:
+                1. Sin apostilla
+                2. Con apostilla
+                """);
                 } else {
                     throw new ConnectException("Ha habido un error comprobando el pago");
                 }
@@ -233,6 +244,7 @@ public class UnifiedPlatform {
                 certificate = justiceMinistry.getCriminalRecordCertificate(citizen, goal);
                 openDocument(certificate.getPath());
                 this.menu = Menu.PDF_VIEWER;
+                System.out.println("Ya puedes ver el certificado.");
             } catch (ConnectException e){
                 throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
             }
