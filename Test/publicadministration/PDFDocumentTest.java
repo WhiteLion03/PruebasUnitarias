@@ -10,7 +10,6 @@ class PDFDocumentTest {
 
     @Test
     void constructorTest() throws IOException {
-        //PDFDocument doc = new PDFDocument();
         assertThrows(IOException.class, () -> {
             PDFDocument doc = new PDFDocument();
             PDFDocument doc2 = new PDFDocument();
