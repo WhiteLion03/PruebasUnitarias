@@ -8,11 +8,13 @@ import data.goalTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import publicadministration.Citizen;
+import publicadministration.CreditCard;
 import services.CertificationAuthority;
 
 import java.net.ConnectException;
 import java.util.Date;
 
+import static citizenmanagementplatform.Menu.CERTIFICATE_OPTIONS;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnifiedPlatformTest {
@@ -138,6 +140,17 @@ class UnifiedPlatformTest {
 
     @Test
     public void enterCardDataTest(){
+        try {
+            realizePaymentTest();
+            CreditCard cc = new CreditCard(new Nif("12345678G"), "4111111111111111", new Date(2022,
+                    11, 31), new SmallCode("345"));
+            application.enterCardData(cc);
+            assertEquals(CERTIFICATE_OPTIONS, application.getMenu());
+        } catch (NotCorrectFormatException | NotValidPaymentDataException | IncompleteFormException
+                | InsufficientBalanceException | ProceduralException | ConnectException e ) {
+            System.out.println(e.getMessage());
+            fail();
+        }
 
     }
 }

@@ -108,21 +108,21 @@ public class UnifiedPlatform {
 
     public void selectAuthMethod(byte opc) throws ProceduralException {
         if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE) {
-            switch(opc){
-                case 1:
-                    this.authOp = AuthenticateOption.CLAVE_PIN;
-                    this.menu = Menu.AUTHENTICATE_CLAVE_PIN;
-                    System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez para recibir un código PIN en su teléfono\n");
-                case 2:
+            //switch(opc){
+                //case 1:
+                  //  this.authOp = AuthenticateOption.CLAVE_PIN;
+                    //this.menu = Menu.AUTHENTICATE_CLAVE_PIN;
+                    //System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez para recibir un código PIN en su teléfono\n");
+                //case 2:
 
-            }
+            //}
             if (opc == 1) {
                 this.authOp = AuthenticateOption.CLAVE_PIN;
                 this.menu = Menu.AUTHENTICATE_CLAVE_PIN;
                 System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez para recibir un código PIN en su teléfono\n");
-            } else if (opc == 2) {
+//            } else if (opc == 2) {
 
-            } else if (opc) {
+            } else {
                 throw new ProceduralException("Método de autenticación no disponible");
             }
         } else {
@@ -220,7 +220,7 @@ public class UnifiedPlatform {
 
     }
 
-    private void enterCardData(CreditCard cardD) throws IncompleteFormException, NotValidPaymentDataException,
+    void enterCardData(CreditCard cardD) throws IncompleteFormException, NotValidPaymentDataException,
             InsufficientBalanceException, ConnectException, ProceduralException {
         if (this.menu == Menu.CARD_DATA_FORM && authOp == AuthenticateOption.CLAVE_PIN){
             try{
