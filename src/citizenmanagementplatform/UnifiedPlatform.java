@@ -138,8 +138,15 @@ public class UnifiedPlatform {
                     authOp == AuthenticateOption.CLAVE_PERMANENTE_REFORZADA)) {
                 if (certAuth.checkCredent(nif, passw)) {
                     this.nif = nif;
-                    this.menu = Menu.AUTHENTICATE_CLAVE_CHECK;
-                    System.out.println("Su NIF ha sido registrado correctamente.");
+                    if (this.authOp == AuthenticateOption.CLAVE_PERMANENTE){
+                        this.menu = Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE;
+                        System.out.println("Su NIF ha sido registrado correctamente.");
+                    }else{
+                        this.menu = Menu.AUTHENTICATE_CLAVE_CHECK;
+                        System.out.println("Su NIF ha sido registrado correctamente i le han enviado un PIN a su teléfono" +
+                                "para autenticarse. Entre el PIN\n");
+                    }
+
                 }
             }
         } catch (NifNotRegisteredException e) {
@@ -153,9 +160,7 @@ public class UnifiedPlatform {
             throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable" +
                     "y vuelve a intentarlo");
         }
-
     }
-
 
     public void enterNIFAndPINObt(Nif nif, Date valDate) throws NifNotRegisteredException, IncorrectValDateException,
             AnyMobileRegisteredException, ConnectException, ProceduralException {
@@ -188,7 +193,8 @@ public class UnifiedPlatform {
 
     public void enterPIN(SmallCode pin) throws NotValidPINException,
             ConnectException, ProceduralException {
-        if (this.menu == Menu.AUTHENTICATE_CLAVE_CHECK && authOp == AuthenticateOption.CLAVE_PIN) {
+        if (this.menu == Menu.AUTHENTICATE_CLAVE_CHECK && (authOp == AuthenticateOption.CLAVE_PIN ||
+                authOp == AuthenticateOption.CLAVE_PERMANENTE_REFORZADA)) {
             try {
                 if (certAuth.checkPIN(this.nif, pin)) {
                     this.menu = Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS;
