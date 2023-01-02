@@ -169,7 +169,7 @@ public class UnifiedPlatform {
         }
     }
 
-    private void enterForm(Citizen citz, Goal goal) throws IncompleteFormException, IncorrectVerificationException,
+    void enterForm(Citizen citz, Goal goal) throws IncompleteFormException, IncorrectVerificationException,
             ConnectException, ProceduralException {
         if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS && authOp == AuthenticateOption.CLAVE_PIN){
             try{

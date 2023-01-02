@@ -1,10 +1,13 @@
 package citizenmanagementplatform;
 
 import Exceptions.*;
+import data.Goal;
 import data.Nif;
 import data.SmallCode;
+import data.goalTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import publicadministration.Citizen;
 import services.CertificationAuthority;
 
 import java.net.ConnectException;
@@ -107,11 +110,27 @@ class UnifiedPlatformTest {
     }
 
     @Test
+    void enterFormTest() throws NotCorrectFormatException {
+        try {
+            enterPINTest();
+            Citizen pax1 = new Citizen(new Nif("12344567V"), "Laura", "Carrer Major 50", "652143598");
+            Goal g1 = new Goal(goalTypes.PUBLIC_WORKERS);
+            application.enterForm(pax1, g1);
+            assertEquals(Menu.SHOW_AMOUNT_TO_PAY, application.getMenu());
+        } catch (ProceduralException  | IncompleteFormException | IncorrectVerificationException | ConnectException e ) {
+            System.out.println(e.getMessage());
+            fail();
+
+        }
+    }
+
+    @Test
     public void realizePaymentTest(){
         try{
+            enterFormTest();
             application.realizePayment();
             assertEquals(Menu.CARD_DATA_FORM, application.getMenu());
-        }catch (ProceduralException e) {
+        }catch (ProceduralException | NotCorrectFormatException e) {
             System.out.println(e.getMessage());
             fail();
         }
