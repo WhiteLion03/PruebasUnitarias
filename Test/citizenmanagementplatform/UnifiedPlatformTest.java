@@ -136,5 +136,8 @@ class UnifiedPlatformTest {
         }
     }
 
+    @Test
+    public void enterCardDataTest(){
 
+    }
 }

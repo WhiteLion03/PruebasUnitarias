@@ -108,17 +108,33 @@ public class UnifiedPlatform {
 
     public void selectAuthMethod(byte opc) throws ProceduralException {
         if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE) {
+            switch(opc){
+                case 1:
+                    this.authOp = AuthenticateOption.CLAVE_PIN;
+                    this.menu = Menu.AUTHENTICATE_CLAVE_PIN;
+                    System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez para recibir un código PIN en su teléfono\n");
+                case 2:
+
+            }
             if (opc == 1) {
                 this.authOp = AuthenticateOption.CLAVE_PIN;
                 this.menu = Menu.AUTHENTICATE_CLAVE_PIN;
                 System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez para recibir un código PIN en su teléfono\n");
-            } else {
+            } else if (opc == 2) {
+
+            } else if (opc) {
                 throw new ProceduralException("Método de autenticación no disponible");
             }
         } else {
             throw new ProceduralException("No estás en la página correcta para seleccionar esta opción");
         }
     }
+
+    public void enterCred (Nif nif, Password passw) throws NifNotRegisteredException, NotValidCredException,
+            AnyMobileRegisteredException, ConnectException {
+
+    }
+
 
     public void enterNIFAndPINObt(Nif nif, Date valDate) throws NifNotRegisteredException, IncorrectValDateException,
             AnyMobileRegisteredException, ConnectException, ProceduralException {

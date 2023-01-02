@@ -9,6 +9,6 @@ import java.net.ConnectException;
 public class GPDDummy implements services.GPD{
     @Override
     public boolean verifyData(Citizen persData, Goal goal) throws IncorrectVerificationException, ConnectException {
-        return false;
+        return true;
     }
 }
