@@ -108,59 +108,57 @@ public class UnifiedPlatform {
 
     public void selectAuthMethod(byte opc) throws ProceduralException {
         if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE) {
-            switch (opc) {
-                case 1 -> {
+            switch(opc){
+                case 1:
                     this.authOp = AuthenticateOption.CLAVE_PIN;
                     this.menu = Menu.AUTHENTICATE_CLAVE;
                     System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez" +
                             "para recibir un código PIN en su teléfono.\n");
-                }
-                case 2 -> {
+                    break;
+                case 2:
                     this.authOp = AuthenticateOption.CLAVE_PERMANENTE;
                     this.menu = Menu.AUTHENTICATE_CLAVE;
-                    System.out.println("Método cl@ve permanente seleccionado.\n");
-                }
-                case 3 -> {
+                    System.out.println("Método cl@ve permanente seleccionado.");
+                    break;
+                case 3:
                     this.authOp = AuthenticateOption.CLAVE_PERMANENTE_REFORZADA;
                     this.menu = Menu.AUTHENTICATE_CLAVE;
-                    System.out.println("Método cl@ve permanente reforzada seleccionado.\n");
-                }
-                default -> throw new ProceduralException("Método de autenticación no disponible");
+                    System.out.println("Método cl@ve permanente reforzada seleccionado.");
+                    break;
+                default:
+                    throw new ProceduralException("Método de autenticación no disponible");
             }
-        } else {
-            throw new ProceduralException("No estás en la página correcta para seleccionar esta opción");
         }
     }
 
-    public void enterCred(Nif nif, Password passw) throws NifNotRegisteredException, NotValidCredException,
-            AnyMobileRegisteredException, ConnectException, ProceduralException {
-        if (this.menu == Menu.AUTHENTICATE_CLAVE && (authOp == AuthenticateOption.CLAVE_PERMANENTE ||
-                authOp == AuthenticateOption.CLAVE_PERMANENTE_REFORZADA)) {
-            try {
+    public void enterCred (Nif nif, Password passw) throws NifNotRegisteredException, NotValidCredException,
+            AnyMobileRegisteredException, ConnectException {
+        try {
+            if (this.menu == Menu.AUTHENTICATE_CLAVE && (authOp == AuthenticateOption.CLAVE_PERMANENTE ||
+                    authOp == AuthenticateOption.CLAVE_PERMANENTE_REFORZADA)) {
                 if (certAuth.checkCredent(nif, passw)) {
                     this.nif = nif;
                     if (this.authOp == AuthenticateOption.CLAVE_PERMANENTE){
                         this.menu = Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE;
-                        System.out.println("Su NIF ha sido registrado correctamente.\n");
-                    } else {
+                        System.out.println("Su NIF ha sido registrado correctamente.");
+                    }else{
                         this.menu = Menu.AUTHENTICATE_CLAVE_CHECK;
                         System.out.println("Su NIF ha sido registrado correctamente i le han enviado un PIN a su teléfono" +
                                 "para autenticarse. Entre el PIN\n");
                     }
+
                 }
-            } catch (NifNotRegisteredException e) {
-                throw new NifNotRegisteredException("No estás registrado en el sistema Clave Permanente.");
-            } catch (NotValidCredException e) {
-                throw new NotValidCredException("Las credenciales proporcionadas no son válidas. Por favor, revisa" +
-                        "el usuario y la contraseña y vuelve a intentarlo.");
-            } catch (AnyMobileRegisteredException e) {
-                throw new AnyMobileRegisteredException("No hay ningún dispositivo registrado.");
-            } catch (ConnectException e) {
-                throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable" +
-                        "y vuelve a intentarlo");
             }
-        } else {
-            throw new ProceduralException("No estás en la página correcta para seleccionar esta opción");
+        } catch (NifNotRegisteredException e) {
+            throw new NifNotRegisteredException("No estás registrado en el sistema Clave Permanente.");
+        } catch (NotValidCredException e) {
+            throw new NotValidCredException("Las credenciales proporcionadas no son válidas. Por favor, revisa" +
+                    "el usuario y la contraseña y vuelve a intentarlo.");
+        } catch (AnyMobileRegisteredException e) {
+            throw new AnyMobileRegisteredException("No hay ningún dispositivo registrado.");
+        } catch (ConnectException e) {
+            throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable" +
+                    "y vuelve a intentarlo");
         }
     }
 
@@ -216,9 +214,9 @@ public class UnifiedPlatform {
         }
     }
 
-    public void enterForm(Citizen citz, Goal goal) throws IncompleteFormException, IncorrectVerificationException,
+    void enterForm(Citizen citz, Goal goal) throws IncompleteFormException, IncorrectVerificationException,
             ConnectException, ProceduralException {
-        if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS && authOp != AuthenticateOption.NONE){
+        if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS && authOp == AuthenticateOption.CLAVE_PIN){
             try{
                 if(citz == null || goal == null){
                     throw new IncompleteFormException("El formulario no está completo");
@@ -241,19 +239,20 @@ public class UnifiedPlatform {
     }
 
     public void realizePayment() throws ProceduralException {
-        if (this.menu == Menu.SHOW_AMOUNT_TO_PAY && authOp != AuthenticateOption.NONE){
+        if (this.menu == Menu.SHOW_AMOUNT_TO_PAY && authOp == AuthenticateOption.CLAVE_PIN){
             this.menu = Menu.CARD_DATA_FORM;
         }else{
             throw new ProceduralException("Error procedural, no se encuentra en el trámite 'Obtener certificado de" +
                     " antecedentes penales' o no ha escogido el método" +
                     " de autenticación Cl@ve PIN.");
         }
+
     }
 
-    public void enterCardData(CreditCard cardD) throws IncompleteFormException, NotValidPaymentDataException,
+    void enterCardData(CreditCard cardD) throws IncompleteFormException, NotValidPaymentDataException,
             InsufficientBalanceException, ConnectException, ProceduralException {
-        if (this.menu == Menu.CARD_DATA_FORM && authOp != AuthenticateOption.NONE) {
-            try {
+        if (this.menu == Menu.CARD_DATA_FORM && authOp == AuthenticateOption.CLAVE_PIN){
+            try{
                 if(cardD == null){
                     throw new IncompleteFormException("El formulario no está completo");
                 }
@@ -263,10 +262,11 @@ public class UnifiedPlatform {
                     transfId++;
                     this.menu = Menu.CERTIFICATE_OPTIONS;
                     System.out.println("""
-                            Ha entrado en la sección 'Seleccionar opciones de certificado'
-                            Seleccione una opción:
-                            1. Sin apostilla
-                            2. Con apostilla""");
+                Ha entrado en la sección 'Seleccionar opciones de certificado'
+                Seleccione una opción:
+                1. Sin apostilla
+                2. Con apostilla
+                """);
                 } else {
                     throw new ConnectException("Ha habido un error comprobando el pago");
                 }
@@ -284,12 +284,12 @@ public class UnifiedPlatform {
 
 
     public void obtainCertificate() throws BadPathException, DigitalSignatureException, ConnectException, ProceduralException {
-        if(menu == Menu.CERTIFICATE_OPTIONS && authOp != AuthenticateOption.NONE){
+        if(menu == Menu.CERTIFICATE_OPTIONS || authOp != AuthenticateOption.CLAVE_PIN){
             try{
                 certificate = justiceMinistry.getCriminalRecordCertificate(citizen, goal);
                 openDocument(certificate.getPath());
                 this.menu = Menu.PDF_VIEWER;
-                System.out.println("Ya puedes ver el certificado.\n");
+                System.out.println("Ya puedes ver el certificado.");
             } catch (ConnectException e){
                 throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
             }

@@ -1,10 +1,7 @@
 package citizenmanagementplatform;
 
 import Exceptions.*;
-import data.Goal;
-import data.Nif;
-import data.SmallCode;
-import data.goalTypes;
+import data.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import publicadministration.Citizen;
@@ -84,10 +81,23 @@ class UnifiedPlatformTest {
     }
 
     @Test
+    void enterCredTest() {
+        try {
+            selectAuthMethodTest();
+            application.enterCred(new Nif("48281063S"), new Password("Hola1234"));
+        } catch (NifNotRegisteredException | AnyMobileRegisteredException |
+                NotCorrectFormatException | ConnectException | NotValidCredException e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
+
+    }
+
+    @Test
     public void enterNIFAndPINObtTest() {
         try {
             // Cualquier combinación de navegación por el menú
-            selectAuthMethodTest();
+            enterCredTest();
             application.enterNIFAndPINObt(new Nif("48281063S"), new Date());
             assertEquals(Menu.AUTHENTICATE_CLAVE_CHECK, application.getMenu());
             assertEquals(new Nif("48281063S"), application.getNif());
@@ -115,7 +125,7 @@ class UnifiedPlatformTest {
     void enterFormTest() throws NotCorrectFormatException {
         try {
             enterPINTest();
-            Citizen pax1 = new Citizen(new Nif("12344567V"), "Laura", "Carrer Major 50", "652143598");
+            Citizen pax1 = new Citizen(new Nif("48281063S"), "Laura", "Carrer Major 50", "652143598");
             Goal g1 = new Goal(goalTypes.PUBLIC_WORKERS);
             application.enterForm(pax1, g1);
             assertEquals(Menu.SHOW_AMOUNT_TO_PAY, application.getMenu());
@@ -142,7 +152,7 @@ class UnifiedPlatformTest {
     public void enterCardDataTest(){
         try {
             realizePaymentTest();
-            CreditCard cc = new CreditCard(new Nif("12345678G"), "4111111111111111", new Date(2022,
+            CreditCard cc = new CreditCard(new Nif("48281063S"), "4111111111111111", new Date(2022,
                     11, 31), new SmallCode("345"));
             application.enterCardData(cc);
             assertEquals(CERTIFICATE_OPTIONS, application.getMenu());
@@ -159,11 +169,9 @@ class UnifiedPlatformTest {
             enterCardDataTest();
             application.obtainCertificate();
             assertEquals(Menu.PDF_VIEWER, application.getMenu());
-        } catch (ProceduralException | DigitalSignatureException | BadPathException | ConnectException e ) {
+        } catch (ProceduralException | DigitalSignatureException | BadPathException | ConnectException e) {
             System.out.println(e.getMessage());
             fail();
         }
-
-
     }
 }
