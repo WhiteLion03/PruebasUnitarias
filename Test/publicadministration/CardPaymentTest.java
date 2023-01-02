@@ -1,7 +1,7 @@
 package publicadministration;
 
 import data.Nif;
-import data.NotCorrectFormatException;
+import Exceptions.NotCorrectFormatException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

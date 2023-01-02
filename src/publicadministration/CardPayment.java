@@ -1,7 +1,7 @@
 package publicadministration;
 
 import data.Nif;
-import data.NotCorrectFormatException;
+import Exceptions.NotCorrectFormatException;
 
 import java.math.BigDecimal;
 import java.util.Date;

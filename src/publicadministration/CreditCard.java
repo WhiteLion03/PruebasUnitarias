@@ -2,7 +2,7 @@ package publicadministration;
 
 
 import data.Nif;
-import data.NotCorrectFormatException;
+import Exceptions.NotCorrectFormatException;
 import data.SmallCode;
 
 import java.util.Date;

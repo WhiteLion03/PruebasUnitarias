@@ -3,25 +3,34 @@ package citizenmanagementplatform;
 import data.*;
 import services.*;
 import publicadministration.*;
+import Exceptions.*;
+import data.Goal;
+import data.Nif;
+import data.SmallCode;
+import publicadministration.Citizen;
+import services.*;
 
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.Date;
 
 public class UnifiedPlatform {
-
-
     // The class members
     private enum Menu {
         MAIN_PAGE, JUSTICE_MINISTRY, JUSTICE_MINISTRY_PROCEDURES, OBTAIN_PENAL_CERTIFICATE
     }
     private Menu menu = Menu.MAIN_PAGE;
-
+    private Nif nif;
+    private Date valDate;
+    private byte selectedOption;
+    private Citizen citizen;
+    private Goal goal;
     private enum AuthenticateOption {
         NONE, CLAVE_PIN
     }
     private AuthenticateOption authOp = AuthenticateOption.NONE;
     private CertificationAuthority certAuth;
+    private GPD gpd;
 
     // The constructor
     public UnifiedPlatform() throws IOException {
@@ -40,7 +49,6 @@ public class UnifiedPlatform {
     }
 
     // Input events
-
     private AuthenticateOption getAuthenticateOption() {
         return authOp;
     }
@@ -99,7 +107,15 @@ public class UnifiedPlatform {
             throw new ProceduralException("Error procedural, no se encuentra en el trámite '' o no ha escogido el método" +
                     " de autenticación Cl@ve PIN.");
         }
-        certAuth.sendPIN(nif, valDate);
+        try{
+            //S'ha de fer una clase per CertificationAuthority ¿?
+            if (!certAuth.sendPIN(nif, valDate)){
+                throw new AnyMobileRegisteredException("No estás registrado en el sistema Cl@ve PIN");
+            }
+            //Què vol dir el Nif y la fecha del ciudadano no corresponden??
+        }catch(ConnectException | AnyMobileRegisteredException e){
+            throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
+        }
     }
     /*
     public void enterPIN(SmallCode pin)  throws NotValidPINException,
@@ -110,6 +126,21 @@ public class UnifiedPlatform {
     public void enterForm(Citizen citizen, Goal goal) throws IncompleteFormException, IncorrectVerificationException,
             ConnectException {
 
+    }
+
+    private void enterForm(Citizen citz, Goal goal) throws IncompleteFormException, IncorrectVerificationException, ConnectException {
+        try{
+            if(citz == null || goal == null){
+                throw new IncompleteFormException("El formulario no está completo");
+            }else if (!GPD.verifyData(citz, goal)){
+                throw new IncorrectVerificationException("La información no es correcta");
+            }else{
+                this.citizen = citz;
+                this.goal = goal;
+            }
+        }catch(ConnectException | IncorrectVerificationException e){
+            throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
+        }
     }
 
     public void realizePayment() {
