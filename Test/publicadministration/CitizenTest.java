@@ -2,11 +2,33 @@ package publicadministration;
 
 import data.Nif;
 import Exceptions.NotCorrectFormatException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CitizenTest {
+
+    @Test
+    void constructorNameTest() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new Citizen(new Nif("48056732V"), (String)null, "Carrer Major, 26", "653543123");
+        });
+    }
+
+    @Test
+    void constructorAddTest() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new Citizen(new Nif("48056732V"), "Helena", (String)null, "653543123");
+        });
+    }
+
+    @Test
+    void constructorMobileTest() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new Citizen(new Nif("48056732V"), "Helena", "Carrer Major 26", (String)null);
+        });
+    }
 
     @Test
     void getNameTest() throws NotCorrectFormatException {
