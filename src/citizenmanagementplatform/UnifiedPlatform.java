@@ -92,8 +92,7 @@ public class UnifiedPlatform {
     }
 
     public void selectCriminalReportCertificate() throws ProceduralException {
-        if (this.menu != Menu.MAIN_PAGE && this.menu != Menu.JUSTICE_MINISTRY &&
-                this.menu != Menu.JUSTICE_MINISTRY_PROCEDURES) {
+        if (this.menu != Menu.MAIN_PAGE && this.menu != Menu.JUSTICE_MINISTRY) {
             if (this.menu == Menu.AUTHENTICATE_CLAVE || this.menu == Menu.AUTHENTICATE_CLAVE_CHECK) {
                 this.authOp = AuthenticateOption.NONE;
                 System.out.println("No te has autenticado correctamente\n");
@@ -107,6 +106,7 @@ public class UnifiedPlatform {
                 Selecciona una opción de identificación:
                 1. Cl@ve PIN
                 2. Cl@ve permanente
+                3. Cl@ve permanente reforzada
                 """);
         } else {
             throw new ProceduralException("No estás en la página correcta para seleccionar esta opción");
@@ -148,7 +148,7 @@ public class UnifiedPlatform {
                     this.nif = nif;
                     if (this.authOp == AuthenticateOption.CLAVE_PERMANENTE) {
                         this.menu = Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE;
-                        System.out.println("Su NIF ha sido registrado correctamente.\n");
+                        System.out.println("Su NIF ha sido registrado correctamente. Se ha autenticado correctamente\n");
                     } else {
                         this.menu = Menu.AUTHENTICATE_CLAVE_CHECK;
                         System.out.println("Su NIF ha sido registrado correctamente i le han enviado un PIN a su teléfono" +
@@ -225,22 +225,22 @@ public class UnifiedPlatform {
 
     void enterForm(Citizen citz, Goal goal) throws IncompleteFormException, IncorrectVerificationException,
             ConnectException, ProceduralException {
-        if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS && authOp != AuthenticateOption.NONE){
-            try{
-                if(citz == null || goal == null){
+        if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS && authOp != AuthenticateOption.NONE) {
+            try {
+                if (citz == null || goal == null) {
                     throw new IncompleteFormException("El formulario no está completo");
-                }else if (!gpd.verifyData(citz, goal)){
+                } else if (!this.nif.equals(citz.getNif()) || !gpd.verifyData(citz, goal)) {
                     throw new IncorrectVerificationException("La información no es correcta");
-                }else{
+                } else {
                     this.citizen = citz;
                     this.goal = goal;
                     this.menu = Menu.SHOW_AMOUNT_TO_PAY;
-                    System.out.println("\n");
+                    System.out.println("Datos personales correctos. Proeder al pago\n");
                 }
-            }catch(ConnectException e){
+            } catch(ConnectException e) {
                 throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
             }
-        }else{
+        } else {
             throw new ProceduralException("Error procedural, no se encuentra en el trámite 'Obtener certificado de" +
                     " antecedentes penales' o no ha escogido el método" +
                     " de autenticación Cl@ve PIN.");
@@ -250,6 +250,7 @@ public class UnifiedPlatform {
     public void realizePayment() throws ProceduralException {
         if (this.menu == Menu.SHOW_AMOUNT_TO_PAY && authOp != AuthenticateOption.NONE){
             this.menu = Menu.CARD_DATA_FORM;
+            System.out.println("Pago en proceso. Importe a pagar: 3,86 €. Introduzca su tarjeta de crédito\n");
         }else{
             throw new ProceduralException("Error procedural, no se encuentra en el trámite 'Obtener certificado de" +
                     " antecedentes penales' o no ha escogido el método" +
@@ -265,19 +266,23 @@ public class UnifiedPlatform {
                 if(cardD == null){
                     throw new IncompleteFormException("El formulario no está completo");
                 }
-                if (cas.askForApproval(transfId+"", cardD, new Date(), new BigDecimal(1))) {
+                if (!this.nif.equals(cardD.getNif())) {
+                    throw new NotValidPaymentDataException("Su NIF no corresponde con el de su sesión iniciada");
+                }
+                if (cas.askForApproval(String.valueOf(transfId), cardD, new Date(), new BigDecimal(1))) {
                     this.payment = new CardPayment(this.nif, new BigDecimal(1));
                     registerPayment();
                     transfId++;
                     this.menu = Menu.CERTIFICATE_OPTIONS;
                     System.out.println("""
+                            Pago efectuado con éxito
                             Ha entrado en la sección 'Seleccionar opciones de certificado'
                             Seleccione una opción:
                             1. Sin apostilla
                             2. Con apostilla
                             """);
                 } else {
-                    throw new ConnectException("Ha habido un error comprobando el pago");
+                    throw new NotValidPaymentDataException("Tarjeta de crédito no válida");
                 }
             }catch (ConnectException e) {
                 throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
@@ -296,7 +301,7 @@ public class UnifiedPlatform {
         if(menu == Menu.CERTIFICATE_OPTIONS && authOp != AuthenticateOption.NONE){
             try{
                 certificate = justiceMinistry.getCriminalRecordCertificate(citizen, goal);
-                PDFDocument certificatePDF = (PDFDocument) certificate;
+                PDFDocument certificatePDF = certificate;
                 openDocument(certificatePDF.getPath());
                 this.menu = Menu.PDF_VIEWER;
                 System.out.println("Ya puedes ver el certificado.\n");

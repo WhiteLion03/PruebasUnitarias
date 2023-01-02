@@ -30,7 +30,9 @@ class UnifiedPlatformTest {
 
     @Test
     public void selectJustMinTest() {
-        application.setMenu(MAIN_PAGE);
+        assertThrows(ProceduralException.class, () -> {
+            application.selectJusMin();
+        });
         try {
             // Cualquier combinación de navegación por el menú
             application.selectJusMin();
@@ -43,7 +45,6 @@ class UnifiedPlatformTest {
 
     @Test
     public void selectProceduresTest() {
-        application.setMenu(JUSTICE_MINISTRY);
         try {
             // Cualquier combinación de navegación por el menú
             selectJustMinTest();
@@ -70,12 +71,27 @@ class UnifiedPlatformTest {
     }
 
     @Test
+    public void selectAuthMethodClavePINTest() {
+        try {
+            // Cualquier combinación de navegación por el menú
+            selectCriminalReportCertificateTest();
+            application.selectAuthMethod((byte) 1);
+            assertEquals(Menu.AUTHENTICATE_CLAVE, application.getMenu());
+            assertEquals(AuthenticateOption.CLAVE_PIN, application.getAuthOp());
+        } catch (ProceduralException e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
+    }
+
+    @Test
     public void selectAuthMethodTest() {
         try {
             // Cualquier combinación de navegación por el menú
             selectCriminalReportCertificateTest();
             application.selectAuthMethod((byte) 3);
             assertEquals(Menu.AUTHENTICATE_CLAVE, application.getMenu());
+            assertEquals(AuthenticateOption.CLAVE_PERMANENTE_REFORZADA, application.getAuthOp());
         } catch (ProceduralException e) {
             System.out.println(e.getMessage());
             fail();
@@ -100,7 +116,7 @@ class UnifiedPlatformTest {
     public void enterNIFAndPINObtTest() {
         try {
             // Cualquier combinación de navegación por el menú
-            enterCredTest();
+            //selectAuthMethodTest();
             application.enterNIFAndPINObt(new Nif("48281063S"), new Date());
             assertEquals(Menu.AUTHENTICATE_CLAVE_CHECK, application.getMenu());
             assertEquals(new Nif("48281063S"), application.getNif());
@@ -115,7 +131,7 @@ class UnifiedPlatformTest {
     public void enterPINTest() {
         try {
             // Cualquier combinación de navegación por el menú
-            enterNIFAndPINObtTest();
+            enterCredTest();
             application.enterPIN(new SmallCode("547"));
             assertEquals(Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS, application.getMenu());
         } catch (ProceduralException | NotCorrectFormatException | ConnectException | NotValidPINException e) {
