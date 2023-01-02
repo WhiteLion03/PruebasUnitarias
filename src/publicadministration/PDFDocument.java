@@ -62,6 +62,11 @@ public class PDFDocument {
      * @throws IOException si no puede abrirlo porque no existe
      */
     public void openDoc() throws IOException {
-        Desktop.getDesktop().open(file);
+        try {
+            Desktop.getDesktop().open(file);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 }
