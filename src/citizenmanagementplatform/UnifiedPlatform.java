@@ -108,30 +108,31 @@ public class UnifiedPlatform {
 
     public void selectAuthMethod(byte opc) throws ProceduralException {
         if (this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE) {
-            switch(opc){
-                case 1:
+            switch (opc) {
+                case 1 -> {
                     this.authOp = AuthenticateOption.CLAVE_PIN;
                     this.menu = Menu.AUTHENTICATE_CLAVE;
                     System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez" +
                             "para recibir un código PIN en su teléfono.\n");
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     this.authOp = AuthenticateOption.CLAVE_PERMANENTE;
                     this.menu = Menu.AUTHENTICATE_CLAVE;
-                    System.out.println("Método cl@ve permanente seleccionado.");
-                    break;
-                case 3:
+                    System.out.println("Método cl@ve permanente seleccionado.\n");
+                }
+                case 3 -> {
                     this.authOp = AuthenticateOption.CLAVE_PERMANENTE_REFORZADA;
                     this.menu = Menu.AUTHENTICATE_CLAVE;
-                    System.out.println("Método cl@ve permanente reforzada seleccionado.");
-                    break;
-                default:
-                    throw new ProceduralException("Método de autenticación no disponible");
+                    System.out.println("Método cl@ve permanente reforzada seleccionado.\n");
+                }
+                default -> throw new ProceduralException("Método de autenticación no disponible");
             }
+        } else {
+            throw new ProceduralException("No estás en la página correcta para seleccionar esta opción");
         }
     }
 
-    public void enterCred (Nif nif, Password passw) throws NifNotRegisteredException, NotValidCredException,
+    public void enterCred(Nif nif, Password passw) throws NifNotRegisteredException, NotValidCredException,
             AnyMobileRegisteredException, ConnectException {
         try {
             if (this.menu == Menu.AUTHENTICATE_CLAVE && (authOp == AuthenticateOption.CLAVE_PERMANENTE ||
