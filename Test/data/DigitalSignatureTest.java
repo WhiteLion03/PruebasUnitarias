@@ -7,14 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DigitalSignatureTest {
 
     @Test
-    void testConstructor() {
+    void constructorTest() {
         assertThrows(NullPointerException.class, () -> {
             DigitalSignature digitalSignature = new DigitalSignature (null);
         });
     }
 
     @Test
-    void testEquals() {
+    void equalsTest() {
         byte[] bytes1 = {0,20,4,8};
         byte[] bytes2 = {0,20,4,10};
         byte[] bytes3 = {0,20,4};
@@ -28,7 +28,7 @@ public class DigitalSignatureTest {
     }
 
     @Test
-    void testToString() {
+    void toStringTest() {
         byte[] bytes = {0,20,4};
         DigitalSignature digitalSignature = new DigitalSignature(bytes);
         System.out.println(digitalSignature);

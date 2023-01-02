@@ -8,14 +8,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class DocPathTest {
 
     @Test
-    void testConstructor() {
+    void constructorTest() {
         assertThrows(NullPointerException.class, () -> {
             DocPath docPath = new DocPath (null);
         });
     }
 
     @Test
-    void testEquals() {
+    void equalsTest() {
         DocPath docPath1 = new DocPath ("/home/users/Pedro/desktop");
         DocPath docPath2 = new DocPath ("/home/users/Pedro/desktop");
         DocPath docPath3 = new DocPath ("/home/users/Pedro");
@@ -24,7 +24,7 @@ public class DocPathTest {
     }
 
     @Test
-    void testToString() {
+    void toStringTest() {
         DocPath docPath = new DocPath ("/home/users/Juan/desktop/archivos");
         System.out.println(docPath);
     }

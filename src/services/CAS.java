@@ -1,5 +1,7 @@
 package services;
 
+import Exceptions.InsufficientBalanceException;
+import Exceptions.NotValidPaymentDataException;
 import publicadministration.CreditCard;
 
 import java.math.BigDecimal;

@@ -9,6 +9,7 @@ public class Citizen {
     private String mobileNumb;
 
     public Citizen (Nif nif, String name, String add, String mobile) {
+        if (name == null || add == null || mobile == null) throw new NullPointerException("Un parámetro es null");
         this.nif = nif;
         this.name = name;
         this.address = add;

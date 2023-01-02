@@ -1,6 +1,7 @@
 package publicadministration;
 
 import data.Nif;
+import Exceptions.NotCorrectFormatException;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,14 +11,18 @@ public class CardPayment {
     private final String reference;
     private final Nif nif;
     private final Date date;
-    private final BigDecimal importe;
+    private final BigDecimal imp;
 
-    // TODO falta el CardPayment.reference
-    public CardPayment (Nif nif, BigDecimal imp) {
+    public CardPayment(Nif nif, BigDecimal imp) throws NotCorrectFormatException {
         this.nif = nif;
-        this.importe = imp;
         this.reference = generateReference();
         this.date = new Date();
+
+        if (imp.compareTo(new BigDecimal(0)) > 0) {
+            this.imp = imp;
+        } else {
+            throw new NotCorrectFormatException("El importe es 0 o inferior, pago no válido");
+        }
     }
 
     public String getReference() {
@@ -32,14 +37,13 @@ public class CardPayment {
         return date;
     }
 
-    public BigDecimal getImporte() {
-        return importe;
+    public BigDecimal getImp() {
+        return imp;
     }
 
     private String generateReference() {
         return UUID.randomUUID().toString();
     }
-
 
     @Override
     public String toString() {
@@ -47,7 +51,7 @@ public class CardPayment {
                 "reference='" + reference + '\'' +
                 ", nif=" + nif +
                 ", date=" + date +
-                ", importe=" + importe +
+                ", importe=" + imp +
                 '}';
     }
 }

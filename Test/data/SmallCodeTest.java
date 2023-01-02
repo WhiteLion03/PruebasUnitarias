@@ -1,5 +1,6 @@
 package data;
 
+import Exceptions.NotCorrectFormatException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class SmallCodeTest {
 
     @Test
-    void testConstructor() {
+    void constructorTest() {
         assertThrows(NullPointerException.class, () -> {
             SmallCode smallCode = new SmallCode (null);
         });
@@ -27,7 +28,7 @@ public class SmallCodeTest {
     }
 
     @Test
-    void testEquals() throws NotCorrectFormatException {
+    void equalsTest() throws NotCorrectFormatException {
         SmallCode smallCode1 = new SmallCode ("376");
         SmallCode smallCode2 = new SmallCode ("376");
         SmallCode smallCode3 = new SmallCode ("379");
@@ -36,7 +37,7 @@ public class SmallCodeTest {
     }
 
     @Test
-    void testToString() throws NotCorrectFormatException {
+    void toStringTest() throws NotCorrectFormatException {
         SmallCode smallCode = new SmallCode ("523");
         System.out.println(smallCode);
     }

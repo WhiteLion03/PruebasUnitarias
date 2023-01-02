@@ -9,48 +9,59 @@ import data.DocPath;
 
 
 public class PDFDocument {
-    private Date creatDate;
+    private final Date creatDate;
     private DocPath path;
-    private File file;
+    private final File file;
 
-    public PDFDocument () {
-        this.path = new DocPath("/download");
-        this.file = new File("document.pdf");
+    /***
+     * Crea un documento PDF en la carpeta de descargas dentro de la de usuario de windows
+     * @throws IOException si la ruta "c:\Users\<user.home>\Downloads" no existiera o ya existiera un archivo en dicha
+     * ruta con el mismo nombre
+     */
+    public PDFDocument() throws IOException {
+        this.path = new DocPath(System.getProperty("user.home") + "\\Downloads");
+        this.file = new File(path.getPath() + "\\criminal_record_certificate.pdf");
+        if (!file.createNewFile()) throw new IOException("El archivo no se ha podido crear");
         this.creatDate = new Date();
-
     }
 
-    public void moveDoc (DocPath destPath) throws IOException{
+    public Date getCreatDate() {
+        return creatDate;
+    }
 
+    public DocPath getPath() {
+        return path;
+    }
+
+    /***
+     * Mueve el documento a otra carpeta, si el documento ya existe en dicha carpeta lanza IOException
+     * @param destPath ruta de destino
+     * @return true si se ha podido mover
+     * @throws IOException si el archivo a mover no existe, la ruta de destino no existe o no es directorio i la ruta de
+     * destino ya contiene un archivo con el mismo nombre.
+     */
+    public boolean moveDoc(DocPath destPath) throws IOException{
         if (!file.exists()) {
-            throw new IOException("L'arxiu no existeix.");
+            throw new IOException("El archivo a mover no existe");
         }
 
-
-        File dest = new File (destPath.toString());
+        File dest = new File(destPath.getPath());
         if (!dest.exists() || !dest.isDirectory()) {
-            throw new IOException("La ruta no és vàlida perquè o no existeix, o no és un directori");
-
+            throw new IOException("La ruta de destino no es válida bien porqué no existe o no es un directorio");
         }
 
-        if(!file.renameTo(new File (destPath + file.getName()))) throw new IOException("No s'ha pogut moure");
+        if(!file.renameTo(new File(destPath.getPath() + file.getName())))
+            throw new IOException("El archivo no se ha podido mover");
 
         path = destPath;
-
+        return true;
     }
 
-    public void openDoc (DocPath path) throws IOException {
-        Desktop.getDesktop().open(new File(path.toString()));
-
-       /* try {
-            File path = new File ("temp\laboralLife.pdf");
-            Desktop.getDesktop().open(path);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        */
-
-
+    /***
+     * Abre el documento
+     * @throws IOException si no puede abrirlo porque no existe
+     */
+    public void openDoc() throws IOException {
+        Desktop.getDesktop().open(file);
     }
-
 }

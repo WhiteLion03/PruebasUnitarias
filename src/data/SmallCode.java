@@ -1,5 +1,7 @@
 package data;
 
+import Exceptions.NotCorrectFormatException;
+
 public class SmallCode {
     private final String code;
 
@@ -42,6 +44,6 @@ public class SmallCode {
 
     @Override
     public String toString() {
-        return "SmallCode{" + "CVS tarjeta='" + this.code + '\'' + '}';
+        return "SmallCode{" + "código='" + this.code + '\'' + '}';
     }
 }
