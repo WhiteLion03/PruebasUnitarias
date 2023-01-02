@@ -1,5 +1,7 @@
 package publicadministration;
 
+import data.Nif;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -7,6 +9,19 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CrimeConvictionTest {
+
+    @Test
+    void constructorTest() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new CrimeConviction(new Date(2002, 12, 30), null, "Presó 4 anys");
+        });
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new CrimeConviction(new Date(2002, 12, 30), "Robatori 4 botigues", null);
+        });
+
+
+    }
 
     @Test
     void getCommitDateTest() {
