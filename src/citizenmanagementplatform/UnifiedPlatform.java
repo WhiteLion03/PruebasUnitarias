@@ -92,12 +92,14 @@ public class UnifiedPlatform {
     }
 
     public void selectCriminalReportCertificate() throws ProceduralException {
-        if (this.menu == Menu.JUSTICE_MINISTRY_PROCEDURES || this.menu == Menu.AUTHENTICATE_CLAVE ||
-                this.menu == Menu.AUTHENTICATE_CLAVE_CHECK ||
-                this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS) {
-            if (this.authOp == AuthenticateOption.CLAVE_PIN) {
+        if (this.menu != Menu.MAIN_PAGE && this.menu != Menu.JUSTICE_MINISTRY &&
+                this.menu != Menu.JUSTICE_MINISTRY_PROCEDURES) {
+            if (this.menu == Menu.AUTHENTICATE_CLAVE || this.menu == Menu.AUTHENTICATE_CLAVE_CHECK) {
                 this.authOp = AuthenticateOption.NONE;
-                System.out.println("Su sesión iniciada mediante Cl@ve PIN se ha cerrado");
+                System.out.println("No te has autenticado correctamente\n");
+            } else if (this.authOp == AuthenticateOption.CLAVE_PIN) {
+                this.authOp = AuthenticateOption.NONE;
+                System.out.println("La sesión iniciada mediante Cl@ve PIN se ha cerrado\n");
             }
             this.menu = Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE;
             System.out.println("""
@@ -137,7 +139,7 @@ public class UnifiedPlatform {
         }
     }
 
-    public void enterCred (Nif nif, Password passw) throws NifNotRegisteredException, NotValidCredException,
+    public void enterCred(Nif nif, Password passw) throws NifNotRegisteredException, NotValidCredException,
             AnyMobileRegisteredException, ConnectException, ProceduralException {
         if (this.menu == Menu.AUTHENTICATE_CLAVE && (authOp == AuthenticateOption.CLAVE_PERMANENTE ||
                 authOp == AuthenticateOption.CLAVE_PERMANENTE_REFORZADA)) {

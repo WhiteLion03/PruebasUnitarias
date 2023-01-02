@@ -74,7 +74,7 @@ class UnifiedPlatformTest {
         try {
             // Cualquier combinación de navegación por el menú
             selectCriminalReportCertificateTest();
-            application.selectAuthMethod((byte) 1);
+            application.selectAuthMethod((byte) 3);
             assertEquals(Menu.AUTHENTICATE_CLAVE, application.getMenu());
         } catch (ProceduralException e) {
             System.out.println(e.getMessage());
@@ -87,6 +87,7 @@ class UnifiedPlatformTest {
         try {
             selectAuthMethodTest();
             application.enterCred(new Nif("48281063S"), new Password("Hola1234"));
+            assertEquals(AUTHENTICATE_CLAVE_CHECK, application.getMenu());
         } catch (NifNotRegisteredException | AnyMobileRegisteredException | NotCorrectFormatException |
                  ConnectException | NotValidCredException | ProceduralException e) {
             System.out.println(e.getMessage());
