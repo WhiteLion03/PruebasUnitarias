@@ -87,8 +87,8 @@ public class UnifiedPlatform {
     }
 
     public void selectCriminalReportCertificate() throws ProceduralException {
-        if (this.menu == Menu.JUSTICE_MINISTRY_PROCEDURES || this.menu == Menu.AUTHENTICATE_CLAVE_PIN ||
-                this.menu == Menu.AUTHENTICATE_CLAVE_PIN_CHECK ||
+        if (this.menu == Menu.JUSTICE_MINISTRY_PROCEDURES || this.menu == Menu.AUTHENTICATE_CLAVE ||
+                this.menu == Menu.AUTHENTICATE_CLAVE_CHECK ||
                 this.menu == Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS) {
             if (this.authOp == AuthenticateOption.CLAVE_PIN) {
                 this.authOp = AuthenticateOption.NONE;
@@ -111,44 +111,67 @@ public class UnifiedPlatform {
             switch(opc){
                 case 1:
                     this.authOp = AuthenticateOption.CLAVE_PIN;
-                    this.menu = Menu.AUTHENTICATE_CLAVE_PIN;
-                    System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez para recibir un código PIN en su teléfono\n");
+                    this.menu = Menu.AUTHENTICATE_CLAVE;
+                    System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez" +
+                            "para recibir un código PIN en su teléfono.\n");
+                    break;
                 case 2:
-
+                    this.authOp = AuthenticateOption.CLAVE_PERMANENTE;
+                    this.menu = Menu.AUTHENTICATE_CLAVE;
+                    System.out.println("Método cl@ve permanente seleccionado.");
+                    break;
+                case 3:
+                    this.authOp = AuthenticateOption.CLAVE_PERMANENTE_REFORZADA;
+                    this.menu = Menu.AUTHENTICATE_CLAVE;
+                    System.out.println("Método cl@ve permanente reforzada seleccionado.");
+                    break;
+                default:
+                    throw new ProceduralException("Método de autenticación no disponible");
             }
-            if (opc == 1) {
-                this.authOp = AuthenticateOption.CLAVE_PIN;
-                this.menu = Menu.AUTHENTICATE_CLAVE_PIN;
-                System.out.println("Método cl@ve PIN seleccionado. Entre su NIF y fecha de validez para recibir un código PIN en su teléfono\n");
-            } else if (opc == 2) {
-
-            } else if (opc) {
-                throw new ProceduralException("Método de autenticación no disponible");
-            }
-        } else {
-            throw new ProceduralException("No estás en la página correcta para seleccionar esta opción");
         }
     }
 
     public void enterCred (Nif nif, Password passw) throws NifNotRegisteredException, NotValidCredException,
             AnyMobileRegisteredException, ConnectException {
+        try {
+            if (this.menu == Menu.AUTHENTICATE_CLAVE && (authOp == AuthenticateOption.CLAVE_PERMANENTE ||
+                    authOp == AuthenticateOption.CLAVE_PERMANENTE_REFORZADA)) {
+                if (certAuth.checkCredent(nif, passw)) {
+                    this.nif = nif;
+                    this.menu = Menu.AUTHENTICATE_CLAVE_CHECK;
+                    System.out.println("Su NIF ha sido registrado correctamente.");
+                }
+            }
+        } catch (NifNotRegisteredException e) {
+            throw new NifNotRegisteredException("No estás registrado en el sistema Clave Permanente.");
+        } catch (NotValidCredException e) {
+            throw new NotValidCredException("Las credenciales proporcionadas no son válidas. Por favor, revisa" +
+                    "el usuario y la contraseña y vuelve a intentarlo.");
+        } catch (AnyMobileRegisteredException e) {
+            throw new AnyMobileRegisteredException("No hay ningún dispositivo registrado.");
+        } catch (ConnectException e) {
+            throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable" +
+                    "y vuelve a intentarlo");
+        }
 
     }
 
 
     public void enterNIFAndPINObt(Nif nif, Date valDate) throws NifNotRegisteredException, IncorrectValDateException,
             AnyMobileRegisteredException, ConnectException, ProceduralException {
-        if (this.menu == Menu.AUTHENTICATE_CLAVE_PIN && authOp == AuthenticateOption.CLAVE_PIN) {
+        if (this.menu == Menu.AUTHENTICATE_CLAVE && authOp == AuthenticateOption.CLAVE_PIN) {
             try {
                 if (certAuth.sendPIN(nif, valDate)) {
                     this.nif = nif;
-                    this.menu = Menu.AUTHENTICATE_CLAVE_PIN_CHECK;
-                    System.out.println("Su NIF ha sido registrado correctamente i le han enviado un PIN a su teléfono para autenticarse. Entre el PIN\n");
+                    this.menu = Menu.AUTHENTICATE_CLAVE_CHECK;
+                    System.out.println("Su NIF ha sido registrado correctamente i le han enviado un PIN a su teléfono" +
+                            "para autenticarse. Entre el PIN\n");
                 } else {
                     throw new ProceduralException("Ha habido un error de la autoridad de certificación en enviar el PIN, vuelve a intentarlo más tarde");
                 }
             } catch (ConnectException e) {
-                throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable y vuelve a intentarlo");
+                throw new ConnectException("Ha habido un error de conexión, asegúrate de tener una conexión estable" +
+                        "y vuelve a intentarlo");
             } catch (NifNotRegisteredException e) {
                 throw new NifNotRegisteredException("No estás registrado en el sistema Cl@ve PIN");
             } catch (IncorrectValDateException e) {
@@ -165,7 +188,7 @@ public class UnifiedPlatform {
 
     public void enterPIN(SmallCode pin) throws NotValidPINException,
             ConnectException, ProceduralException {
-        if (this.menu == Menu.AUTHENTICATE_CLAVE_PIN_CHECK && authOp == AuthenticateOption.CLAVE_PIN) {
+        if (this.menu == Menu.AUTHENTICATE_CLAVE_CHECK && authOp == AuthenticateOption.CLAVE_PIN) {
             try {
                 if (certAuth.checkPIN(this.nif, pin)) {
                     this.menu = Menu.OBTAIN_CRIMINAL_REPORT_CERTIFICATE_IN_PROCESS;

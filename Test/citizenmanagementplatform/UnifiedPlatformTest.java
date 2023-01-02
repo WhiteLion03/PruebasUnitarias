@@ -5,7 +5,6 @@ import data.Nif;
 import data.SmallCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import services.CertificationAuthority;
 
 import java.net.ConnectException;
 import java.util.Date;
@@ -71,7 +70,7 @@ class UnifiedPlatformTest {
             // Cualquier combinación de navegación por el menú
             selectCriminalReportCertificateTest();
             application.selectAuthMethod((byte) 1);
-            assertEquals(Menu.AUTHENTICATE_CLAVE_PIN, application.getMenu());
+            assertEquals(Menu.AUTHENTICATE_CLAVE, application.getMenu());
         } catch (ProceduralException e) {
             System.out.println(e.getMessage());
             fail();
@@ -84,7 +83,7 @@ class UnifiedPlatformTest {
             // Cualquier combinación de navegación por el menú
             selectAuthMethodTest();
             application.enterNIFAndPINObt(new Nif("48281063S"), new Date());
-            assertEquals(Menu.AUTHENTICATE_CLAVE_PIN_CHECK, application.getMenu());
+            assertEquals(Menu.AUTHENTICATE_CLAVE_CHECK, application.getMenu());
             assertEquals(new Nif("48281063S"), application.getNif());
         } catch (ProceduralException | NotCorrectFormatException | NifNotRegisteredException |
                  IncorrectValDateException | AnyMobileRegisteredException | ConnectException e) {
