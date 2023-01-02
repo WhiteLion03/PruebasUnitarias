@@ -151,6 +151,19 @@ class UnifiedPlatformTest {
             System.out.println(e.getMessage());
             fail();
         }
+    }
+
+    @Test
+    void obtainCertificateTest() {
+        try {
+            enterCardDataTest();
+            application.obtainCertificate();
+            assertEquals(Menu.PDF_VIEWER, application.getMenu());
+        } catch (ProceduralException | DigitalSignatureException | BadPathException | ConnectException e ) {
+            System.out.println(e.getMessage());
+            fail();
+        }
+
 
     }
 }
